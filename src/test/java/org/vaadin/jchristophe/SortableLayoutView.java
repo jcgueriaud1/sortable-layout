@@ -9,7 +9,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@Route("sortable")
+@Route("")
 public class SortableLayoutView extends Div {
 
     private VerticalLayout verticalLayout;
@@ -23,8 +23,9 @@ public class SortableLayoutView extends Div {
             button1.setId("ID "+ i);
             verticalLayout.add(button1);
         }
-      //  add(verticalLayout);
+
         sortableLayout = new SortableLayout(verticalLayout);
+        sortableLayout.setAnimation(150);
         add(sortableLayout);
 
         sortableLayout.setOnOrderChanged(component -> {

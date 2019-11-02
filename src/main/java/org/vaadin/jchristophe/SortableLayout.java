@@ -24,7 +24,8 @@ public class SortableLayout extends Div {
     private SerializableConsumer<Component> onOrderChanged;
 
     private final Component layout;
-    private boolean disabledSort = true;
+
+    private boolean disabledSort = false;
 
     private String config;
 
@@ -90,8 +91,6 @@ public class SortableLayout extends Div {
         Component component = getComponents().get(oldIndex);
         ((HasComponents) layout).remove(component);
         ((HasComponents) layout).addComponentAtIndex(newIndex, component);
-     //   children.remove(component);
-     //   children.add(newIndex,component);
         if (onOrderChanged != null) {
             onOrderChanged.accept(component);
         }
