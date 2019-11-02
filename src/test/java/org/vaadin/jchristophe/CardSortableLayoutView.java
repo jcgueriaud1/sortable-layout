@@ -3,8 +3,6 @@ package org.vaadin.jchristophe;
 import com.github.appreciated.card.Card;
 import com.github.appreciated.card.content.IconItem;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -19,17 +17,17 @@ public class CardSortableLayoutView extends Div {
     private HorizontalLayout mainLayout = new HorizontalLayout();
 
     public CardSortableLayoutView() {
-        SortableBehaviour sortableBehaviour = buildCardPanel();
-        SortableBehaviour cardPanelDragOnIcon = buildCardPanelDragOnIcon();
-        mainLayout.addAndExpand(sortableBehaviour, cardPanelDragOnIcon);
+        SortableLayout sortableLayout = buildCardPanel();
+        SortableLayout cardPanelDragOnIcon = buildCardPanelDragOnIcon();
+        mainLayout.addAndExpand(sortableLayout, cardPanelDragOnIcon);
         mainLayout.setSizeFull();
         add(mainLayout);
     }
 
-    private SortableBehaviour buildCardPanel() {
+    private SortableLayout buildCardPanel() {
 
         VerticalLayout verticalLayout;
-        SortableBehaviour sortableBehaviour;
+        SortableLayout sortableLayout;
         verticalLayout = new VerticalLayout();
         verticalLayout.setSizeFull();
         for (int i = 0; i < 15; i++) {
@@ -40,11 +38,11 @@ public class CardSortableLayoutView extends Div {
             card.setId("ID "+ i);
             verticalLayout.add(card);
         }
-        sortableBehaviour = new SortableBehaviour(verticalLayout);
+        sortableLayout = new SortableLayout(verticalLayout);
 
-        sortableBehaviour.setOnOrderChanged(component -> {
+        sortableLayout.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components ");
-            for (Component sortableLayoutComponent : sortableBehaviour.getComponents()) {
+            for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
                     ids.append(" ").append(sortableLayoutComponent.getId().get());
                 }
@@ -52,19 +50,19 @@ public class CardSortableLayoutView extends Div {
 
             Notification.show(ids.toString());
         });
-        return sortableBehaviour;
+        return sortableLayout;
     }
 
 
-    private SortableBehaviour buildCardPanelDragOnIcon() {
+    private SortableLayout buildCardPanelDragOnIcon() {
 
         VerticalLayout verticalLayout;
-        SortableBehaviour sortableBehaviour;
+        SortableLayout sortableLayout;
         verticalLayout = new VerticalLayout();
         verticalLayout.setSizeFull();
-        sortableBehaviour = new SortableBehaviour(verticalLayout);
+        sortableLayout = new SortableLayout(verticalLayout);
         String cssMove = "my-handle";
-        sortableBehaviour.setHandle(cssMove);
+        sortableLayout.setHandle(cssMove);
         for (int i = 0; i < 15; i++) {
 
             Icon icon = VaadinIcon.ARROWS.create();
@@ -77,9 +75,9 @@ public class CardSortableLayoutView extends Div {
             verticalLayout.add(card);
         }
 
-        sortableBehaviour.setOnOrderChanged(component -> {
+        sortableLayout.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components ");
-            for (Component sortableLayoutComponent : sortableBehaviour.getComponents()) {
+            for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
                     ids.append(" ").append(sortableLayoutComponent.getId().get());
                 }
@@ -87,6 +85,6 @@ public class CardSortableLayoutView extends Div {
 
             Notification.show(ids.toString());
         });
-        return sortableBehaviour;
+        return sortableLayout;
     }
 }

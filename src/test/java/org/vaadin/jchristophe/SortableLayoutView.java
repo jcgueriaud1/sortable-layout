@@ -13,7 +13,7 @@ import com.vaadin.flow.router.Route;
 public class SortableLayoutView extends Div {
 
     private VerticalLayout verticalLayout;
-    private SortableBehaviour sortableBehaviour;
+    private SortableLayout sortableLayout;
 
     public SortableLayoutView() {
         verticalLayout = new VerticalLayout();
@@ -24,12 +24,12 @@ public class SortableLayoutView extends Div {
             verticalLayout.add(button1);
         }
       //  add(verticalLayout);
-        sortableBehaviour = new SortableBehaviour(verticalLayout);
-        add(sortableBehaviour);
+        sortableLayout = new SortableLayout(verticalLayout);
+        add(sortableLayout);
 
-        sortableBehaviour.setOnOrderChanged(component -> {
+        sortableLayout.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components ");
-            for (Component sortableLayoutComponent : sortableBehaviour.getComponents()) {
+            for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
                     ids.append(" ").append(sortableLayoutComponent.getId().get());
                 }
@@ -52,12 +52,12 @@ public class SortableLayoutView extends Div {
             horizontalLayout.add(button1);
         }
 
-        SortableBehaviour sortableBehaviour2 = new SortableBehaviour(horizontalLayout);
-        add(sortableBehaviour2);
+        SortableLayout sortableLayout2 = new SortableLayout(horizontalLayout);
+        add(sortableLayout2);
 
-        sortableBehaviour2.setOnOrderChanged(component -> {
+        sortableLayout2.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components HL ");
-            for (Component sortableLayoutComponent : sortableBehaviour2.getComponents()) {
+            for (Component sortableLayoutComponent : sortableLayout2.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
                     ids.append(" ").append(sortableLayoutComponent.getId().get());
                 }
@@ -68,6 +68,6 @@ public class SortableLayoutView extends Div {
     }
 
     private void toggleDndMode() {
-        sortableBehaviour.setSort(!sortableBehaviour.isSort());
+        sortableLayout.setDisabledSort(!sortableLayout.isDisabledSort());
     }
 }
