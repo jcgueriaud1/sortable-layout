@@ -49,3 +49,12 @@ mvn jetty:run
 ```
 
 This deploys demo at http://localhost:8080
+
+## Examples
+Sort a list of buttons:
+
+![Card demo](sortable-layout.gif)
+
+Sort a list of cards
+
+![Card demo](sortable-card-demo.gif)
