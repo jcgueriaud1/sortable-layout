@@ -9,13 +9,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@Route("")
-public class SortableLayoutView extends Div {
+@Route("buttons")
+public class ButtonSortableLayoutView extends Div {
 
     private VerticalLayout verticalLayout;
     private SortableLayout sortableLayout;
 
-    public SortableLayoutView() {
+    public ButtonSortableLayoutView() {
         verticalLayout = new VerticalLayout();
         for (int i = 0; i < 5; i++) {
 

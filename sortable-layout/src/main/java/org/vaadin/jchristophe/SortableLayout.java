@@ -27,21 +27,23 @@ public class SortableLayout extends Div {
 
     private boolean disabledSort = false;
 
-    private String config;
-
     public SortableLayout(Component layout) {
+        this(layout, new SortableConfig());
+    }
+
+    public SortableLayout(Component layout, SortableConfig config) {
         if (!(layout instanceof HasComponents)) {
             throw new IllegalArgumentException("Layout must implements HasComponents");
         } else {
             this.layout = layout;
         }
         add(layout);
-        initConnector(layout.getElement());
+        initConnector(layout.getElement(), config);
     }
 
-    private void initConnector(Element layout) {
+    private void initConnector(Element layout, SortableConfig config) {
         runBeforeClientResponse(ui -> ui.getPage().executeJs(
-                "window.Vaadin.Flow.sortableConnector.initLazy($0, $1, $2)", config,
+                "window.Vaadin.Flow.sortableConnector.initLazy($0, $1, $2)", config.toJson(),
                 getElement(), layout));
     }
 
@@ -87,7 +89,6 @@ public class SortableLayout extends Div {
 
     @ClientCallable
     private void onReorderListener(int oldIndex, int newIndex) {
-        System.out.println("order changed"+ oldIndex + "--" + newIndex);
         Component component = getComponents().get(oldIndex);
         ((HasComponents) layout).remove(component);
         ((HasComponents) layout).addComponentAtIndex(newIndex, component);
