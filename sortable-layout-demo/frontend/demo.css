@@ -29,8 +29,6 @@
     content:"-Drag";
 }
 
-
-
 .sortable-ghost {
     opacity:70%;
     color:var(--lumo-contrast-70pct);
@@ -39,4 +37,9 @@
 .sortable-drag {
     color:var(--lumo-primary-color);
     opacity:50%;
+}
+
+.selected {
+    color: yellow;
+    background-color:var(--lumo-contrast-50pct);
 }

@@ -20,6 +20,7 @@ public class SortableLayoutView extends DemoView {
         createGroupExample();
         createFilterExample();
         createColorExample();
+        createMultiDragExample();
     }
 
 
@@ -125,6 +126,26 @@ public class SortableLayoutView extends DemoView {
         addCard("Color Example", sortableLayout, message);
     }
 
+
+    private void createMultiDragExample() {
+        Div message = createMessageDiv("multi-drag-message");
+
+        // begin-source-example
+        // source-example-heading: Multi Drag Example
+        UnorderedList list = new UnorderedList();
+        list.add(new ListItem("item 1"),new ListItem("item 2"),
+                new ListItem("item 3"),new ListItem("item 4"),
+                new ListItem("item 5"),new ListItem("item 6"),
+                new ListItem("item 7"));
+        SortableConfig sortableConfig = new SortableConfig();
+        sortableConfig.setMultiDrag(true);
+        sortableConfig.setSelectedClass("selected");
+        sortableConfig.setAnimation(150);
+        SortableLayout sortableLayout = new SortableLayout(list, sortableConfig);
+        // end-source-example
+
+        addCard("Multi Drag Example", sortableLayout, message);
+    }
 
     private Div createMessageDiv(String id) {
         Div message = new Div();

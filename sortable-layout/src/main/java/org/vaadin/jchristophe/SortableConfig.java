@@ -25,6 +25,10 @@ public class SortableConfig implements JsonSerializable {
     private String chosenClass; // Class name for the chosen item
     private String dragClass; // Class name for the dragging item
 
+    private boolean multiDrag = false;
+
+    private String selectedClass;
+
     public boolean isSort() {
         return sort;
     }
@@ -117,6 +121,14 @@ public class SortableConfig implements JsonSerializable {
         return chosenClass;
     }
 
+    public boolean isMultiDrag() {
+        return multiDrag;
+    }
+
+    public void setMultiDrag(boolean multiDrag) {
+        this.multiDrag = multiDrag;
+    }
+
     /**
      * default sortable-chosen
      * @param chosenClass
@@ -138,6 +150,14 @@ public class SortableConfig implements JsonSerializable {
         this.dragClass = dragClass;
     }
 
+    public String getSelectedClass() {
+        return selectedClass;
+    }
+
+    public void setSelectedClass(String selectedClass) {
+        this.selectedClass = selectedClass;
+    }
+
     @Override
     public JsonObject toJson() {
 
@@ -147,6 +167,7 @@ public class SortableConfig implements JsonSerializable {
         obj.put("delay", getDelay());
         obj.put("delayOnTouchOnly", isDelayOnTouchOnly());
         obj.put("touchStartThreshold", getTouchStartThreshold());
+        obj.put("multiDrag", isMultiDrag());
         if (getGhostClass() != null) {
             obj.put("ghostClass", getGhostClass());
         }
@@ -155,6 +176,9 @@ public class SortableConfig implements JsonSerializable {
         }
         if (getDragClass() != null) {
             obj.put("dragClass", getDragClass());
+        }
+        if (getSelectedClass() != null) {
+            obj.put("selectedClass", getSelectedClass());
         }
         if (!filterClassNames.isEmpty()) {
             obj.put("filter", filterClassNames.stream().map(
