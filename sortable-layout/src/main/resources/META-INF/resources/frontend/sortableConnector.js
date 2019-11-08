@@ -24,7 +24,12 @@ window.Vaadin.Flow.sortableConnector = {
             evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
             evt.clone; // the clone element
             evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
-            c.$server.onReorderListener(evt.oldIndex, evt.newIndex);
+            if (evt.to === evt.from) {
+                c.$server.onReorderListener(evt.oldIndex, evt.newIndex);
+            } else {
+                evt.from.parentElement.$server.onRemoveListener(evt.oldIndex);
+                evt.to.parentElement.$server.onAddListener(evt.newIndex);
+            }
         }
 
     }

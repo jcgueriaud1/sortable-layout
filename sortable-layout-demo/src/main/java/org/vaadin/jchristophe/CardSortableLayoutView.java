@@ -3,6 +3,7 @@ package org.vaadin.jchristophe;
 import com.github.appreciated.card.Card;
 import com.github.appreciated.card.content.IconItem;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
+@CssImport("./demo.css")
 @Route("card")
 public class CardSortableLayoutView extends Div {
 

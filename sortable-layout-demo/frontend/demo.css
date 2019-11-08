@@ -1,0 +1,42 @@
+.ignore-elements {
+    font-style: italic;
+    opacity: 80%;
+}
+
+.custom-sortable-ghost {
+    opacity:70%;
+}
+
+.custom-sortable-ghost::after {
+    content:"-Ghost";
+}
+
+
+.custom-sortable-chosen {
+    background-color: #919191;
+}
+
+.custom-sortable-chosen::after {
+    content:"-Chosen";
+}
+
+.custom-sortable-drag {
+    background-color:gray;
+    opacity:50%;
+}
+
+.custom-sortable-drag::after {
+    content:"-Drag";
+}
+
+
+
+.sortable-ghost {
+    opacity:70%;
+    color:var(--lumo-contrast-70pct);
+}
+
+.sortable-drag {
+    color:var(--lumo-primary-color);
+    opacity:50%;
+}

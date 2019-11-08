@@ -2,6 +2,7 @@ package org.vaadin.jchristophe;
 
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -32,10 +33,9 @@ public class SortableLayout extends Div {
     }
 
     public SortableLayout(Component layout, SortableConfig config) {
-        if (!(layout instanceof HasComponents)) {
+        this.layout = layout;
+        if (!(getLayout() instanceof HasComponents)) {
             throw new IllegalArgumentException("Layout must implements HasComponents");
-        } else {
-            this.layout = layout;
         }
         add(layout);
         initConnector(layout.getElement(), config);
@@ -89,9 +89,30 @@ public class SortableLayout extends Div {
 
     @ClientCallable
     private void onReorderListener(int oldIndex, int newIndex) {
+        //System.out.println("onReorderListener");
         Component component = getComponents().get(oldIndex);
-        ((HasComponents) layout).remove(component);
-        ((HasComponents) layout).addComponentAtIndex(newIndex, component);
+        ((HasComponents) getLayout()).remove(component);
+        ((HasComponents) getLayout()).addComponentAtIndex(newIndex, component);
+        if (onOrderChanged != null) {
+            onOrderChanged.accept(component);
+        }
+    }
+
+    @ClientCallable
+    private void onAddListener(int newIndex) {
+        System.out.println("onAddListener");
+//        ((HasComponents) getLayout()).remove(component);
+    //    ((HasComponents) getLayout()).addComponentAtIndex(newIndex, component);
+//        if (onOrderChanged != null) {
+//            onOrderChanged.accept(component);
+//        }
+    }
+
+    @ClientCallable
+    private void onRemoveListener(int oldIndex) {
+        System.out.println("onRemoveListener");
+        Component component = getComponents().get(oldIndex);
+        ((HasComponents) getLayout()).remove(component);
         if (onOrderChanged != null) {
             onOrderChanged.accept(component);
         }
@@ -102,6 +123,14 @@ public class SortableLayout extends Div {
     }
 
     public List<Component> getComponents() {
-        return layout.getChildren().collect(Collectors.toList());
+        return getLayout().getChildren().collect(Collectors.toList());
+    }
+
+    private Component getLayout() {
+        if (layout instanceof Composite) {
+            return (((Composite) layout).getContent());
+        } else {
+            return layout;
+        }
     }
 }
