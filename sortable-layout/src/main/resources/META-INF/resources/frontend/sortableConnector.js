@@ -1,3 +1,5 @@
+//window.Sortable = require("sortablejs/Sortable.js");
+
 window.Vaadin.Flow.sortableConnector = {
     initLazy: function (customConfig, c, layout) {
         // Check whether the connector was already initialized
@@ -11,7 +13,7 @@ window.Vaadin.Flow.sortableConnector = {
                 this.sortable.options[optionName] = optionValue;
             }
         };
-
+        window.Sortable = require("sortablejs/Sortable.js");
         c.$connector.sortable = Sortable.create(layout, customConfig);
 
         c.$connector.sortable.options.onEnd = function (/**Event*/evt) {

@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 
 @Tag("sortable")
 @NpmPackage(value = "sortablejs", version = "1.10.1")
-@JavaScript("sortablejs/Sortable.js")
-@JavaScript("https://raw.githack.com/SortableJS/Sortable/master/Sortable.js")
+//@JavaScript("sortablejs/Sortable.js")
+//@JavaScript("https://raw.githack.com/SortableJS/Sortable/master/Sortable.js")
 @JavaScript("frontend://sortableConnector.js")
 public class SortableLayout extends Div {
 
