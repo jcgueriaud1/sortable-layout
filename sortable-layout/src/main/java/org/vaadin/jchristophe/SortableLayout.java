@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Tag("sortable")
-@NpmPackage(value = "sortablejs", version = "1.10.1")
+@NpmPackage(value = "sortablejs", version = "1.10.2")
 //@JavaScript("sortablejs/Sortable.js")
 //@JavaScript("https://raw.githack.com/SortableJS/Sortable/master/Sortable.js")
-@JavaScript("frontend://sortableConnector.js")
+@JavaScript("./sortableConnector.js")
 public class SortableLayout extends Div {
 
     private SerializableConsumer<Component> onOrderChanged;
