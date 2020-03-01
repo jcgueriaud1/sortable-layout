@@ -15,7 +15,7 @@ import com.vaadin.flow.router.Route;
 public class ButtonSortableLayoutView extends Div {
 
     private VerticalLayout verticalLayout;
-    private SortableLayout sortableLayout;
+    private SortableJS sortableLayout;
 
     public ButtonSortableLayoutView() {
         verticalLayout = new VerticalLayout();
@@ -26,11 +26,11 @@ public class ButtonSortableLayoutView extends Div {
             verticalLayout.add(button1);
         }
 
-        sortableLayout = new SortableLayout(verticalLayout);
-        sortableLayout.setAnimation(150);
+        sortableLayout = new SortableJS(verticalLayout);
+       // sortableLayout.setAnimation(150);
         add(sortableLayout);
 
-        sortableLayout.setOnOrderChanged(component -> {
+       /* sortableLayout.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components ");
             for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
@@ -39,7 +39,7 @@ public class ButtonSortableLayoutView extends Div {
             }
 
             Notification.show(ids.toString());
-        });
+        });*/
 
         Button button = new Button("Toogle drag mode", event -> toggleDndMode());
         button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -55,10 +55,10 @@ public class ButtonSortableLayoutView extends Div {
             horizontalLayout.add(button1);
         }
 
-        SortableLayout sortableLayout2 = new SortableLayout(horizontalLayout);
+        SortableJS sortableLayout2 = new SortableJS(horizontalLayout);
         add(sortableLayout2);
 
-        sortableLayout2.setOnOrderChanged(component -> {
+      /*  sortableLayout2.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components HL ");
             for (Component sortableLayoutComponent : sortableLayout2.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
@@ -67,10 +67,10 @@ public class ButtonSortableLayoutView extends Div {
             }
 
             Notification.show(ids.toString());
-        });
+        });*/
     }
 
     private void toggleDndMode() {
-        sortableLayout.setDisabledSort(!sortableLayout.isDisabledSort());
+        //sortableLayout.setDisabledSort(!sortableLayout.isDisabledSort());
     }
 }

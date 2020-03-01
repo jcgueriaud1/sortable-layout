@@ -22,7 +22,7 @@ import org.vaadin.jchristophe.example.ExampleCard;
 public class GridSortableLayoutView extends Div {
 
     private  FlexibleGridLayout flexibleGridLayout = new FlexibleGridLayout();
-    private SortableLayout sortableLayout;
+    private SortableJS sortableLayout;
 
     public GridSortableLayoutView() {
         flexibleGridLayout
@@ -70,11 +70,11 @@ public class GridSortableLayoutView extends Div {
         }
         flexibleGridLayout.setSizeFull();
         setSizeFull();
-        sortableLayout = new SortableLayout(flexibleGridLayout);
-        sortableLayout.setAnimation(150);
+        sortableLayout = new SortableJS(flexibleGridLayout);
+        //sortableLayout.setAnimation(150);
         add(sortableLayout);
 
-        sortableLayout.setOnOrderChanged(component -> {
+      /*  sortableLayout.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components ");
             for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
@@ -83,6 +83,6 @@ public class GridSortableLayoutView extends Div {
             }
 
             Notification.show(ids.toString());
-        });
+        });*/
     }
 }
