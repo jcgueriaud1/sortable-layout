@@ -20,13 +20,13 @@ public class MultiLineCardLayoutView extends Div {
         mainLayout.setPadding(false);
         mainLayout.setSpacing(false);
         mainLayout.getStyle().set("flex-wrap","wrap");
-        SortableLayout sortableLayout = buildCardPanel();
+        SortableJS sortableLayout = buildCardPanel();
         add(sortableLayout);
     }
 
-    private SortableLayout buildCardPanel() {
+    private SortableJS buildCardPanel() {
 
-        SortableLayout sortableLayout;
+        SortableJS sortableLayout;
         mainLayout.setSizeFull();
         for (int i = 0; i < 40; i++) {
 
@@ -36,9 +36,9 @@ public class MultiLineCardLayoutView extends Div {
             card.setId("ID "+ i);
             mainLayout.add(card);
         }
-        sortableLayout = new SortableLayout(mainLayout);
-        sortableLayout.setAnimation(150);
-        sortableLayout.setOnOrderChanged(component -> {
+        sortableLayout = new SortableJS(mainLayout);
+        //sortableLayout.setAnimation(150);
+       /* sortableLayout.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components ");
             for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
@@ -47,7 +47,7 @@ public class MultiLineCardLayoutView extends Div {
             }
 
             Notification.show(ids.toString());
-        });
+        });*/
         return sortableLayout;
     }
 }

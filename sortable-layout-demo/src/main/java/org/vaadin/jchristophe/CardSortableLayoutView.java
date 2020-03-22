@@ -19,17 +19,17 @@ public class CardSortableLayoutView extends Div {
     private HorizontalLayout mainLayout = new HorizontalLayout();
 
     public CardSortableLayoutView() {
-        SortableLayout sortableLayout = buildCardPanel();
-        SortableLayout cardPanelDragOnIcon = buildCardPanelDragOnIcon();
+        SortableJS sortableLayout = buildCardPanel();
+        SortableJS cardPanelDragOnIcon = buildCardPanelDragOnIcon();
         mainLayout.addAndExpand(sortableLayout, cardPanelDragOnIcon);
         mainLayout.setSizeFull();
         add(mainLayout);
     }
 
-    private SortableLayout buildCardPanel() {
+    private SortableJS buildCardPanel() {
 
         VerticalLayout verticalLayout;
-        SortableLayout sortableLayout;
+        SortableJS sortableLayout;
         verticalLayout = new VerticalLayout();
         verticalLayout.setSizeFull();
         for (int i = 0; i < 15; i++) {
@@ -40,9 +40,9 @@ public class CardSortableLayoutView extends Div {
             card.setId("ID "+ i);
             verticalLayout.add(card);
         }
-        sortableLayout = new SortableLayout(verticalLayout);
+        sortableLayout = new SortableJS(verticalLayout);
 
-        sortableLayout.setOnOrderChanged(component -> {
+       /* sortableLayout.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components ");
             for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
@@ -51,20 +51,20 @@ public class CardSortableLayoutView extends Div {
             }
 
             Notification.show(ids.toString());
-        });
+        });*/
         return sortableLayout;
     }
 
 
-    private SortableLayout buildCardPanelDragOnIcon() {
+    private SortableJS buildCardPanelDragOnIcon() {
 
         VerticalLayout verticalLayout;
-        SortableLayout sortableLayout;
+        SortableJS sortableLayout;
         verticalLayout = new VerticalLayout();
         verticalLayout.setSizeFull();
-        sortableLayout = new SortableLayout(verticalLayout);
+        sortableLayout = new SortableJS(verticalLayout);
         String cssMove = "my-handle";
-        sortableLayout.setHandle(cssMove);
+       // sortableLayout.setHandle(cssMove);
         for (int i = 0; i < 15; i++) {
 
             Icon icon = VaadinIcon.ARROWS.create();
@@ -77,7 +77,7 @@ public class CardSortableLayoutView extends Div {
             verticalLayout.add(card);
         }
 
-        sortableLayout.setOnOrderChanged(component -> {
+       /* sortableLayout.setOnOrderChanged(component -> {
             StringBuilder ids = new StringBuilder("components ");
             for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
@@ -86,7 +86,7 @@ public class CardSortableLayoutView extends Div {
             }
 
             Notification.show(ids.toString());
-        });
+        });*/
         return sortableLayout;
     }
 }

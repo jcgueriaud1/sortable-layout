@@ -2,8 +2,8 @@ package org.vaadin.jchristophe;
 
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.html.ListItem;
+import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.demo.DemoView;
 import com.vaadin.flow.router.Route;
@@ -14,7 +14,7 @@ public class SortableLayoutView extends DemoView {
 
     @Override
     protected void initView() {
-        getElement().setAttribute("style","max-width:90%;");
+        getElement().setAttribute("style", "max-width:90%;");
         createBasicExample();
         createAnimationExample();
         createGroupExample();
@@ -30,8 +30,11 @@ public class SortableLayoutView extends DemoView {
         // begin-source-example
         // source-example-heading: Basic Example
         UnorderedList list = new UnorderedList();
-        list.add(new ListItem("item 1"),new ListItem("item 2"),new ListItem("item 3"));
-        SortableLayout sortableLayout = new SortableLayout(list);
+        list.add(new ListItem("item 1"), new ListItem("item 2"), new ListItem("item 3"));
+        list.getChildren().forEach(component -> {
+            component.getElement().setAttribute("draggable",true);
+        });
+        SortableJS sortableLayout = new SortableJS(list);
         // end-source-example
 
         addCard("Basic Example", sortableLayout, message);
@@ -44,10 +47,10 @@ public class SortableLayoutView extends DemoView {
         // begin-source-example
         // source-example-heading: Animation Example
         UnorderedList list = new UnorderedList();
-        list.add(new ListItem("item 1"),new ListItem("item 2"),new ListItem("item 3"));
+        list.add(new ListItem("item 1"), new ListItem("item 2"), new ListItem("item 3"));
         SortableConfig config = new SortableConfig();
         config.setAnimation(300);
-        SortableLayout sortableLayout = new SortableLayout(list,config);
+        SortableJS sortableLayout = new SortableJS(list);
         // end-source-example
 
         addCard("Animation Example", sortableLayout, message);
@@ -61,18 +64,18 @@ public class SortableLayoutView extends DemoView {
         // source-example-heading: Group Example
         VerticalLayout layout = new VerticalLayout();
         UnorderedList foo = new UnorderedList();
-        foo.add(new ListItem("foo 1"),new ListItem("foo 2"),new ListItem("foo 3"));
+        foo.add(new ListItem("foo 1"), new ListItem("foo 2"), new ListItem("foo 3"));
         SortableConfig sortableConfigFoo = new SortableConfig();
         sortableConfigFoo.setGroupName("foo");
         sortableConfigFoo.setAnimation(100);
-        SortableLayout sortableLayoutFoo = new SortableLayout(foo, sortableConfigFoo);
+        SortableJS sortableLayoutFoo = new SortableJS(foo);
         UnorderedList bar = new UnorderedList();
-        bar.add(new ListItem("bar 1"),new ListItem("bar 2"),new ListItem("bar 3"));
+        bar.add(new ListItem("bar 1"), new ListItem("bar 2"), new ListItem("bar 3"));
         SortableConfig sortableConfigBar = new SortableConfig();
         sortableConfigBar.setGroupName("bar");
         sortableConfigBar.allowDragOut(true);
         sortableConfigBar.setAnimation(100);
-        SortableLayout sortableLayoutBar = new SortableLayout(bar,sortableConfigBar);
+        SortableJS sortableLayoutBar = new SortableJS(bar);
 
         UnorderedList qux = new UnorderedList();
         qux.add(new ListItem("qux 1"));
@@ -81,8 +84,8 @@ public class SortableLayoutView extends DemoView {
         sortableConfigQux.addDragInGroupName("foo");
         sortableConfigQux.addDragInGroupName("bar");
         sortableConfigQux.setAnimation(100);
-        SortableLayout sortableLayoutQux = new SortableLayout(qux, sortableConfigQux);
-        layout.add(sortableLayoutFoo,sortableLayoutBar,sortableLayoutQux);
+        SortableJS sortableLayoutQux = new SortableJS(qux);
+        layout.add(sortableLayoutFoo, sortableLayoutBar, sortableLayoutQux);
         // end-source-example
 
         addCard("Group Example", layout, message);
@@ -102,7 +105,7 @@ public class SortableLayoutView extends DemoView {
         list.add(new ListItem("item 3"));
         SortableConfig sortableConfig = new SortableConfig();
         sortableConfig.addFilter("ignore-elements");
-        SortableLayout sortableLayout = new SortableLayout(list, sortableConfig);
+        SortableJS sortableLayout = new SortableJS(list);
         // end-source-example
 
         addCard("Filter Example", sortableLayout, message);
@@ -115,12 +118,12 @@ public class SortableLayoutView extends DemoView {
         // begin-source-example
         // source-example-heading: Color Example
         UnorderedList list = new UnorderedList();
-        list.add(new ListItem("item 1"),new ListItem("item 2"),new ListItem("item 3"));
+        list.add(new ListItem("item 1"), new ListItem("item 2"), new ListItem("item 3"));
         SortableConfig sortableConfig = new SortableConfig();
         sortableConfig.setChosenClass("custom-sortable-chosen");
         sortableConfig.setDragClass("custom-sortable-drag");
         sortableConfig.setGhostClass("custom-sortable-ghost");
-        SortableLayout sortableLayout = new SortableLayout(list, sortableConfig);
+        SortableJS sortableLayout = new SortableJS(list);
         // end-source-example
 
         addCard("Color Example", sortableLayout, message);
@@ -133,15 +136,15 @@ public class SortableLayoutView extends DemoView {
         // begin-source-example
         // source-example-heading: Multi Drag Example
         UnorderedList list = new UnorderedList();
-        list.add(new ListItem("item 1"),new ListItem("item 2"),
-                new ListItem("item 3"),new ListItem("item 4"),
-                new ListItem("item 5"),new ListItem("item 6"),
+        list.add(new ListItem("item 1"), new ListItem("item 2"),
+                new ListItem("item 3"), new ListItem("item 4"),
+                new ListItem("item 5"), new ListItem("item 6"),
                 new ListItem("item 7"));
         SortableConfig sortableConfig = new SortableConfig();
         sortableConfig.setMultiDrag(true);
         sortableConfig.setSelectedClass("selected");
         sortableConfig.setAnimation(150);
-        SortableLayout sortableLayout = new SortableLayout(list, sortableConfig);
+        SortableJS sortableLayout = new SortableJS(list);
         // end-source-example
 
         addCard("Multi Drag Example", sortableLayout, message);
