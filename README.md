@@ -41,6 +41,12 @@ This first version does not implement all the configurations of the js library.
 You can check the configuration of the js library here:
 https://github.com/SortableJS/Sortable
 
+Missing features:
+* Drag and drop from one layout to another
+* Clone items
+* Group configuration is working on the client side but is not working on the server side.
+
+
 ## Development instructions
 
 Starting the test/demo server:
@@ -51,9 +57,9 @@ mvn jetty:run
 This deploys demo at http://localhost:8080
 
 ## Examples
-Sort a list of buttons:
+Sort a list of buttons: (Does not work in Firefox)
 
-![Card demo](sortable-layout.gif)
+![Button demo](sortable-layout.gif)
 
 Sort a list of cards
 
