@@ -20,6 +20,8 @@ public class SortableGroupConfiguration implements JsonSerializable {
     private List<String> groupNameDragOutAllowed = new ArrayList<>();
     // pull
     private boolean dragOutAllowed = true;
+    // pull
+    private boolean clone = false;
     // put
     private boolean dragInAllowed = false;
 
@@ -56,6 +58,13 @@ public class SortableGroupConfiguration implements JsonSerializable {
         groupNameDragOutAllowed.add(name);
     }
 
+    public boolean isClone() {
+        return clone;
+    }
+
+    public void setClone(boolean clone) {
+        this.clone = clone;
+    }
     @Override
     public JsonObject toJson() {
         JsonObject obj = Json.createObject();
@@ -72,14 +81,18 @@ public class SortableGroupConfiguration implements JsonSerializable {
             obj.put("put", array);
         }
 
-        if (groupNameDragOutAllowed.isEmpty()) {
-            obj.put("pull", dragOutAllowed);
+        if (isClone()) {
+            obj.put("pull", "clone");
         } else {
-            JsonArray array = Json.createArray();
-            for (int i = 0; i < groupNameDragOutAllowed.size(); i++) {
-                array.set(i,groupNameDragOutAllowed.get(i));
+            if (groupNameDragOutAllowed.isEmpty()) {
+                obj.put("pull", dragOutAllowed);
+            } else {
+                JsonArray array = Json.createArray();
+                for (int i = 0; i < groupNameDragOutAllowed.size(); i++) {
+                    array.set(i, groupNameDragOutAllowed.get(i));
+                }
+                obj.put("pull", array);
             }
-            obj.put("pull", array);
         }
         return obj;
     }

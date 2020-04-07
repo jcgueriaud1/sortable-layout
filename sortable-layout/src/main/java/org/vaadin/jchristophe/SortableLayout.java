@@ -24,6 +24,20 @@ import java.util.stream.Collectors;
 public class SortableLayout extends Div {
 
     private Logger logger = Logger.getLogger("SortableLayout");
+
+    @FunctionalInterface
+    public interface CloneFunction {
+
+        /**
+         * Clone the component
+         *
+         * @param component
+         * @return clone of the component
+         */
+        Component clone(Component component);
+    }
+
+    private CloneFunction cloneFunction;
     private SerializableConsumer<Component> onOrderChanged;
 
     private final Component layout;
@@ -117,22 +131,26 @@ public class SortableLayout extends Div {
     }
 
     @ClientCallable
-    private void onAddListener(int newIndex) {
+    private void onAddListener(int newIndex, boolean clone) {
         logger.info("Add listener called drop index=" + newIndex);
         Component removedComponent = supplyComponentFunction.get();
         ((HasComponents) getLayout()).addComponentAtIndex(newIndex, removedComponent);
+
         if (onOrderChanged != null) {
             onOrderChanged.accept(removedComponent);
         }
     }
 
     @ClientCallable
-    private void onRemoveListener(int oldIndex) {
+    private void onRemoveListener(int oldIndex, boolean clone) {
         logger.info("remove listener called drag index=" + oldIndex);
         Component removedComponent = getComponents().get(oldIndex);
         storeComponentFunction.accept(removedComponent);
-        //group.setRemoveComponent(removedComponent);
-        ((HasComponents) getLayout()).remove(removedComponent);
+        if (clone) { // remove the component if clone and replace it by a clone
+            ((HasComponents) getLayout()).remove(removedComponent);
+            Component clonedComponent = cloneFunction.clone(removedComponent);
+            ((HasComponents) getLayout()).addComponentAtIndex(oldIndex, clonedComponent);
+        }
         if (onOrderChanged != null) {
             onOrderChanged.accept(removedComponent);
         }
@@ -154,8 +172,11 @@ public class SortableLayout extends Div {
         }
     }
 
-    ///// GROUP
-    public void setGroup(SortableGroupStore group) {
+    public void setCloneFunction(CloneFunction cloneFunction) {
+        this.cloneFunction = cloneFunction;
+    }
+
+    private void setGroup(SortableGroupStore group) {
         supplyComponentFunction = group::getRemoveComponent;
         storeComponentFunction = group::setRemoveComponent;
     }

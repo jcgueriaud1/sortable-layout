@@ -104,6 +104,9 @@ public class SortableConfig implements JsonSerializable {
         group.addDragOutGroupName(name);
     }
 
+    public void cloneOnDragOut(boolean clone) {
+        group.setClone(clone);
+    }
     public String getGhostClass() {
         return ghostClass;
     }
