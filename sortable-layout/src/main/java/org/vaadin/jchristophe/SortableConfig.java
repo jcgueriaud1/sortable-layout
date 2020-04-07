@@ -2,7 +2,6 @@ package org.vaadin.jchristophe;
 
 import com.vaadin.flow.component.JsonSerializable;
 import elemental.json.Json;
-import elemental.json.JsonArray;
 import elemental.json.JsonObject;
 
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class SortableConfig implements JsonSerializable {
 
-    private SortableGroup group = new SortableGroup();
+    private SortableGroupConfiguration group = new SortableGroupConfiguration();
     private boolean sort = true;
     private int delay = 0;
     private boolean delayOnTouchOnly;
@@ -77,15 +76,15 @@ public class SortableConfig implements JsonSerializable {
         this.animation = animation;
     }
 
-    public void setGroupName(String name) {
-        group.setName(name);
-    }
-
     public void addFilter(String filter) {
         filterClassNames.add(filter);
     }
     public void clearFilter() {
         filterClassNames.clear();
+    }
+
+    public void setGroupName(String name) {
+        group.setName(name);
     }
 
     public void allowDragIn(boolean allowed) {
@@ -105,6 +104,9 @@ public class SortableConfig implements JsonSerializable {
         group.addDragOutGroupName(name);
     }
 
+    public void cloneOnDragOut(boolean clone) {
+        group.setClone(clone);
+    }
     public String getGhostClass() {
         return ghostClass;
     }
@@ -197,82 +199,11 @@ public class SortableConfig implements JsonSerializable {
         return null;
     }
 
-    private class SortableGroup  implements JsonSerializable {
+    boolean requireGroupStore() {
+        return group.getName() != null;
+    }
 
-        private String name;
-        // put
-        private List<String> groupNameDragInAllowed = new ArrayList<>();
-        // pull
-        private List<String> groupNameDragOutAllowed = new ArrayList<>();
-        // pull
-        private boolean dragOutAllowed = true;
-        // put
-        private boolean dragInAllowed = false;
-
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public boolean isDragOutAllowed() {
-            return dragOutAllowed;
-        }
-
-        public void setDragOutAllowed(boolean dragOutAllowed) {
-            this.dragOutAllowed = dragOutAllowed;
-        }
-
-        public boolean isDragInAllowed() {
-            return dragInAllowed;
-        }
-
-        public void setDragInAllowed(boolean dragInAllowed) {
-            this.dragInAllowed = dragInAllowed;
-        }
-
-        public void addDragInGroupName(String name) {
-            groupNameDragInAllowed.add(name);
-        }
-
-        public void addDragOutGroupName(String name) {
-            groupNameDragOutAllowed.add(name);
-        }
-
-        @Override
-        public JsonObject toJson() {
-            JsonObject obj = Json.createObject();
-            if (getName() != null) {
-                obj.put("name", getName());
-            }
-            if (groupNameDragInAllowed.isEmpty()) {
-                obj.put("put", dragInAllowed);
-            } else {
-                JsonArray array = Json.createArray();
-                for (int i = 0; i < groupNameDragInAllowed.size(); i++) {
-                    array.set(i, groupNameDragInAllowed.get(i));
-                }
-                obj.put("put", array);
-            }
-
-            if (groupNameDragOutAllowed.isEmpty()) {
-                obj.put("pull", dragOutAllowed);
-            } else {
-                JsonArray array = Json.createArray();
-                for (int i = 0; i < groupNameDragOutAllowed.size(); i++) {
-                    array.set(i,groupNameDragOutAllowed.get(i));
-                }
-                obj.put("pull", array);
-            }
-            return obj;
-        }
-
-        @Override
-        public JsonSerializable readJson(JsonObject value) {
-            return null;
-        }
+    boolean requireCloneFunction() {
+        return group.isClone();
     }
 }

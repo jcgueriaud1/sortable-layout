@@ -23,7 +23,7 @@ public class ButtonSortableLayoutView extends Div {
 
             Button button1 = new Button("btn "+ i);
             button1.setId("ID "+ i);
-            verticalLayout.add(button1);
+            verticalLayout.add(new Div(button1));
         }
 
         sortableLayout = new SortableLayout(verticalLayout);
@@ -52,7 +52,9 @@ public class ButtonSortableLayoutView extends Div {
 
             Button button1 = new Button("btn HL "+ i);
             button1.setId("ID "+ i);
-            horizontalLayout.add(button1);
+            Div div = new Div(button1);
+            div.setSizeFull();
+            horizontalLayout.add(div);
         }
 
         SortableLayout sortableLayout2 = new SortableLayout(horizontalLayout);

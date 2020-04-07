@@ -20,7 +20,7 @@ public class SortableLayoutView extends DemoView {
         createGroupExample();
         createFilterExample();
         createColorExample();
-        createMultiDragExample();
+        //createMultiDragExample();
     }
 
 
@@ -65,14 +65,15 @@ public class SortableLayoutView extends DemoView {
         SortableConfig sortableConfigFoo = new SortableConfig();
         sortableConfigFoo.setGroupName("foo");
         sortableConfigFoo.setAnimation(100);
-        SortableLayout sortableLayoutFoo = new SortableLayout(foo, sortableConfigFoo);
+        SortableGroupStore sortableGroupStore = new SortableGroupStore();
+        SortableLayout sortableLayoutFoo = new SortableLayout(foo, sortableConfigFoo, sortableGroupStore);
         UnorderedList bar = new UnorderedList();
         bar.add(new ListItem("bar 1"),new ListItem("bar 2"),new ListItem("bar 3"));
         SortableConfig sortableConfigBar = new SortableConfig();
         sortableConfigBar.setGroupName("bar");
         sortableConfigBar.allowDragOut(true);
         sortableConfigBar.setAnimation(100);
-        SortableLayout sortableLayoutBar = new SortableLayout(bar,sortableConfigBar);
+        SortableLayout sortableLayoutBar = new SortableLayout(bar, sortableConfigBar, sortableGroupStore);
 
         UnorderedList qux = new UnorderedList();
         qux.add(new ListItem("qux 1"));
@@ -81,7 +82,7 @@ public class SortableLayoutView extends DemoView {
         sortableConfigQux.addDragInGroupName("foo");
         sortableConfigQux.addDragInGroupName("bar");
         sortableConfigQux.setAnimation(100);
-        SortableLayout sortableLayoutQux = new SortableLayout(qux, sortableConfigQux);
+        SortableLayout sortableLayoutQux = new SortableLayout(qux, sortableConfigQux, sortableGroupStore);
         layout.add(sortableLayoutFoo,sortableLayoutBar,sortableLayoutQux);
         // end-source-example
 
@@ -127,6 +128,7 @@ public class SortableLayoutView extends DemoView {
     }
 
 
+    /// Not working on the server side
     private void createMultiDragExample() {
         Div message = createMessageDiv("multi-drag-message");
 
