@@ -1,4 +1,4 @@
-import Sortable from "sortablejs/Sortable.js";
+import Sortable from 'sortablejs';
 
 window.Vaadin.Flow.sortableConnector = {
     initLazy: function (customConfig, c, layout) {

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sortable-layout</artifactId>
-    <version>${sortable.version}</version>
+    <version>0.4.0</version>
     <packaging>jar</packaging>
 
     <name>sortable-layout</name>

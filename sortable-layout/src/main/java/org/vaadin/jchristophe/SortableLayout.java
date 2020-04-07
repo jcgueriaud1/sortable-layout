@@ -133,7 +133,7 @@ public class SortableLayout extends Div {
     @ClientCallable
     private void onReorderListener(int oldIndex, int newIndex) {
         //System.out.println("onReorderListener");
-        logger.info("Reorder listener called drag index=" + oldIndex
+        logger.finest("Reorder listener called drag index=" + oldIndex
                 + " drop index= " + newIndex);
         Component component = getComponents().get(oldIndex);
         ((HasComponents) getLayout()).remove(component);
@@ -145,7 +145,7 @@ public class SortableLayout extends Div {
 
     @ClientCallable
     private void onAddListener(int newIndex, boolean clone) {
-        logger.info("Add listener called drop index=" + newIndex);
+        logger.finest("Add listener called drop index=" + newIndex);
         Component removedComponent = supplyComponentFunction.get();
         ((HasComponents) getLayout()).addComponentAtIndex(newIndex, removedComponent);
 
@@ -156,7 +156,7 @@ public class SortableLayout extends Div {
 
     @ClientCallable
     private void onRemoveListener(int oldIndex, boolean clone) {
-        logger.info("remove listener called drag index=" + oldIndex);
+        logger.finest("remove listener called drag index=" + oldIndex);
         Component removedComponent = getComponents().get(oldIndex);
         storeComponentFunction.accept(removedComponent);
         if (clone) { // remove the component if clone and replace it by a clone

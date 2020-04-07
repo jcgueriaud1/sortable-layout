@@ -10,13 +10,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
 
 @CssImport("./demo.css")
-@Route("twocolumns")
-public class TwoColumnsLayoutView extends HorizontalLayout {
+@Route("twolayouts")
+public class TwoLayoutsView extends HorizontalLayout {
 
     private SortableLayout rightSortableLayout;
     private SortableLayout leftSortableLayout;
 
-    public TwoColumnsLayoutView() {
+    public TwoLayoutsView() {
 
         SortableConfig sortableConfig = new SortableConfig();
         sortableConfig.setGroupName("shared");
@@ -30,13 +30,13 @@ public class TwoColumnsLayoutView extends HorizontalLayout {
         leftList.add(new ListItem("left item 1"),new ListItem("left item 2"),
                 new ListItem("left item 3"));
         leftSortableLayout = new SortableLayout(leftList, sortableConfig,
-                group, TwoColumnsLayoutView::cloneComponent);
+                group, TwoLayoutsView::cloneComponent);
         UnorderedList rightList = new UnorderedList();
         rightList.add(new ListItem("right item 1"),
                 new ListItem("right item 2"),
                 new ListItem("right item 3"));
         rightSortableLayout = new SortableLayout(rightList, sortableConfig,
-                group, TwoColumnsLayoutView::cloneComponent);
+                group, TwoLayoutsView::cloneComponent);
 
         add(leftSortableLayout, rightSortableLayout);
 
