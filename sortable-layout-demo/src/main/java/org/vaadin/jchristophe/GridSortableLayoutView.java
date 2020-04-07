@@ -21,7 +21,7 @@ import org.vaadin.jchristophe.example.ExampleCard;
 @Route("grid")
 public class GridSortableLayoutView extends Div {
 
-    private  FlexibleGridLayout flexibleGridLayout = new FlexibleGridLayout();
+    private FlexibleGridLayout flexibleGridLayout = new FlexibleGridLayout();
     private SortableLayout sortableLayout;
 
     public GridSortableLayoutView() {

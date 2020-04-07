@@ -3,8 +3,10 @@ package org.vaadin.jchristophe;
 import com.github.appreciated.card.Card;
 import com.github.appreciated.card.content.IconItem;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -35,7 +37,11 @@ public class CardSortableLayoutView extends Div {
         for (int i = 0; i < 15; i++) {
 
             Card card = new Card(
-                    new IconItem(VaadinIcon.MAGNET.create(),"Card " + i, "The entire card is draggable "));
+                    new IconItem(VaadinIcon.MAGNET.create(),
+                            new VerticalLayout(
+                                    new Span("Card " + i),
+                                    new Span("The entire card is draggable "),
+                                    new Button("Test"))));
             card.setWidthFull();
             card.setId("ID "+ i);
             verticalLayout.add(card);

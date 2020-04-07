@@ -1,4 +1,4 @@
-//window.Sortable = require("sortablejs/Sortable.js");
+import Sortable from "sortablejs/Sortable.js";
 
 window.Vaadin.Flow.sortableConnector = {
     initLazy: function (customConfig, c, layout) {
@@ -13,7 +13,7 @@ window.Vaadin.Flow.sortableConnector = {
                 this.sortable.options[optionName] = optionValue;
             }
         };
-        window.Sortable = require("sortablejs/Sortable.js");
+
         c.$connector.sortable = Sortable.create(layout, customConfig);
 
         c.$connector.sortable.options.onEnd = function (/**Event*/evt) {

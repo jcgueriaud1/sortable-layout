@@ -13,32 +13,48 @@ import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.function.SerializableConsumer;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Tag("sortable")
 @NpmPackage(value = "sortablejs", version = "1.10.2")
-//@JavaScript("sortablejs/Sortable.js")
-//@JavaScript("https://raw.githack.com/SortableJS/Sortable/master/Sortable.js")
 @JavaScript("./sortableConnector.js")
 public class SortableLayout extends Div {
 
+    private Logger logger = Logger.getLogger("SortableLayout");
     private SerializableConsumer<Component> onOrderChanged;
 
     private final Component layout;
 
     private boolean disabledSort = false;
 
+    private Supplier<Component> supplyComponentFunction;
+    private Consumer<Component> storeComponentFunction;
+
     public SortableLayout(Component layout) {
         this(layout, new SortableConfig());
     }
 
     public SortableLayout(Component layout, SortableConfig config) {
+        this(layout, config, null);
+    }
+
+    public SortableLayout(Component layout, SortableConfig config, SortableGroupStore groupStore) {
         this.layout = layout;
         if (!(getLayout() instanceof HasComponents)) {
             throw new IllegalArgumentException("Layout must implements HasComponents");
         }
         add(layout);
         initConnector(layout.getElement(), config);
+        if (groupStore != null) {
+            setGroup(groupStore);
+        } else {
+            if (config.requireGroupStore()) {
+                throw new IllegalArgumentException("Group store is required if you want to DnD between 2 lists");
+            }
+        }
     }
 
     private void initConnector(Element layout, SortableConfig config) {
@@ -90,6 +106,8 @@ public class SortableLayout extends Div {
     @ClientCallable
     private void onReorderListener(int oldIndex, int newIndex) {
         //System.out.println("onReorderListener");
+        logger.info("Reorder listener called drag index=" + oldIndex
+                + " drop index= " + newIndex);
         Component component = getComponents().get(oldIndex);
         ((HasComponents) getLayout()).remove(component);
         ((HasComponents) getLayout()).addComponentAtIndex(newIndex, component);
@@ -100,21 +118,23 @@ public class SortableLayout extends Div {
 
     @ClientCallable
     private void onAddListener(int newIndex) {
-        System.out.println("onAddListener");
-//        ((HasComponents) getLayout()).remove(component);
-    //    ((HasComponents) getLayout()).addComponentAtIndex(newIndex, component);
-//        if (onOrderChanged != null) {
-//            onOrderChanged.accept(component);
-//        }
+        logger.info("Add listener called drop index=" + newIndex);
+        Component removedComponent = supplyComponentFunction.get();
+        ((HasComponents) getLayout()).addComponentAtIndex(newIndex, removedComponent);
+        if (onOrderChanged != null) {
+            onOrderChanged.accept(removedComponent);
+        }
     }
 
     @ClientCallable
     private void onRemoveListener(int oldIndex) {
-        System.out.println("onRemoveListener");
-        Component component = getComponents().get(oldIndex);
-        ((HasComponents) getLayout()).remove(component);
+        logger.info("remove listener called drag index=" + oldIndex);
+        Component removedComponent = getComponents().get(oldIndex);
+        storeComponentFunction.accept(removedComponent);
+        //group.setRemoveComponent(removedComponent);
+        ((HasComponents) getLayout()).remove(removedComponent);
         if (onOrderChanged != null) {
-            onOrderChanged.accept(component);
+            onOrderChanged.accept(removedComponent);
         }
     }
 
@@ -132,5 +152,11 @@ public class SortableLayout extends Div {
         } else {
             return layout;
         }
+    }
+
+    ///// GROUP
+    public void setGroup(SortableGroupStore group) {
+        supplyComponentFunction = group::getRemoveComponent;
+        storeComponentFunction = group::setRemoveComponent;
     }
 }
