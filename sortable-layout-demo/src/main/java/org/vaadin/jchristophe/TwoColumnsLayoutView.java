@@ -29,29 +29,26 @@ public class TwoColumnsLayoutView extends HorizontalLayout {
         UnorderedList leftList = new UnorderedList();
         leftList.add(new ListItem("left item 1"),new ListItem("left item 2"),
                 new ListItem("left item 3"));
-        leftSortableLayout = new SortableLayout(leftList, sortableConfig, group);
-        leftSortableLayout.setCloneFunction( component -> {
-            if (component instanceof ListItem) {
-                return new ListItem(((ListItem) component).getText());
-            }
-            throw new IllegalArgumentException("Error");
-        });
+        leftSortableLayout = new SortableLayout(leftList, sortableConfig,
+                group, TwoColumnsLayoutView::cloneComponent);
         UnorderedList rightList = new UnorderedList();
         rightList.add(new ListItem("right item 1"),
                 new ListItem("right item 2"),
                 new ListItem("right item 3"));
-        rightSortableLayout = new SortableLayout(rightList, sortableConfig, group);
+        rightSortableLayout = new SortableLayout(rightList, sortableConfig,
+                group, TwoColumnsLayoutView::cloneComponent);
 
-        rightSortableLayout.setCloneFunction( component -> {
-            if (component instanceof ListItem) {
-                return new ListItem(((ListItem) component).getText());
-            }
-            throw new IllegalArgumentException("Error");
-        });
         add(leftSortableLayout, rightSortableLayout);
 
         leftSortableLayout.setOnOrderChanged(c -> showNotification(c, leftSortableLayout));
         rightSortableLayout.setOnOrderChanged(c -> showNotification(c, rightSortableLayout));
+    }
+
+    private static Component cloneComponent(Component component) {
+        if (component instanceof ListItem) {
+            return new ListItem(((ListItem) component).getText());
+        }
+        throw new IllegalArgumentException("Error");
     }
 
     private void showNotification(Component component, SortableLayout sortableLayout) {

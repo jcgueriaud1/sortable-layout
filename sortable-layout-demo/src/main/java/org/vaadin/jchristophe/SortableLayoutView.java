@@ -20,7 +20,7 @@ public class SortableLayoutView extends DemoView {
         createGroupExample();
         createFilterExample();
         createColorExample();
-        createMultiDragExample();
+        //createMultiDragExample();
     }
 
 
@@ -128,6 +128,7 @@ public class SortableLayoutView extends DemoView {
     }
 
 
+    /// Not working on the server side
     private void createMultiDragExample() {
         Div message = createMessageDiv("multi-drag-message");
 

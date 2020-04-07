@@ -56,6 +56,11 @@ public class SortableLayout extends Div {
     }
 
     public SortableLayout(Component layout, SortableConfig config, SortableGroupStore groupStore) {
+        this(layout, config, groupStore, null);
+    }
+
+    public SortableLayout(Component layout, SortableConfig config,
+                          SortableGroupStore groupStore, CloneFunction cloneFunction) {
         this.layout = layout;
         if (!(getLayout() instanceof HasComponents)) {
             throw new IllegalArgumentException("Layout must implements HasComponents");
@@ -69,6 +74,14 @@ public class SortableLayout extends Div {
                 throw new IllegalArgumentException("Group store is required if you want to DnD between 2 lists");
             }
         }
+        if (cloneFunction != null) {
+            this.cloneFunction = cloneFunction;
+        } else {
+            if (config.requireCloneFunction()) {
+                throw new IllegalArgumentException("Clone function is required if you want to clone component");
+            }
+        }
+
     }
 
     private void initConnector(Element layout, SortableConfig config) {
@@ -170,10 +183,6 @@ public class SortableLayout extends Div {
         } else {
             return layout;
         }
-    }
-
-    public void setCloneFunction(CloneFunction cloneFunction) {
-        this.cloneFunction = cloneFunction;
     }
 
     private void setGroup(SortableGroupStore group) {

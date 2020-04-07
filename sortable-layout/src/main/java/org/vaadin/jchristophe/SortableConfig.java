@@ -202,4 +202,8 @@ public class SortableConfig implements JsonSerializable {
     boolean requireGroupStore() {
         return group.getName() != null;
     }
+
+    boolean requireCloneFunction() {
+        return group.isClone();
+    }
 }
