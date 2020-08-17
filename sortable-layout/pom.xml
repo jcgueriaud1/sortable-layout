@@ -4,17 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>org.vaadin.jchristophe</groupId>
     <artifactId>sortable-layout</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
     <packaging>jar</packaging>
 
     <name>sortable-layout</name>
     <description>Drag and drop ordered layout. Vaadin wrapper for sortable js</description>
-    <parent>
-        <groupId>org.vaadin.jchristophe</groupId>
-        <artifactId>sortable-layout-root</artifactId>
-        <version>0.4.0</version>
-    </parent>
+
+    <properties>
+        <vaadin.version>14.3.2</vaadin.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
     <organization>
         <name>Jean-Christophe Gueriaud</name>
     </organization>
@@ -26,6 +31,17 @@
         </license>
     </licenses>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-bom</artifactId>
+                <type>pom</type>
+                <scope>import</scope>
+                <version>${vaadin.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <repositories>
         <repository>

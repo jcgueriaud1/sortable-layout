@@ -3,7 +3,7 @@
 
     <groupId>org.vaadin.jchristophe</groupId>
     <artifactId>sortable-layout-root</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>sortable-layout</module>
@@ -13,8 +13,7 @@
     <description>Drag and drop ordered layout. Vaadin wrapper for sortable js</description>
     
     <properties>
-        <vaadin.version>14.1.17</vaadin.version>
-        <sortable.version>0.4.0</sortable.version>
+        <vaadin.version>14.3.2</vaadin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,11 +32,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>sortable-layout</artifactId>
-                <version>${sortable.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-bom</artifactId>
