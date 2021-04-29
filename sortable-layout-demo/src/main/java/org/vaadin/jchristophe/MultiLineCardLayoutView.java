@@ -11,7 +11,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
 
 @CssImport("./demo.css")
-@Route("multilinecard")
+@Route(value = "multilinecard", layout = MainLayout.class)
 public class MultiLineCardLayoutView extends Div {
 
     private HorizontalLayout mainLayout = new HorizontalLayout();

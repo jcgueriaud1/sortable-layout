@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.jchristophe</groupId>
     <artifactId>sortable-layout-demo</artifactId>
-    <version>0.5.0</version>
+    <version>1.0.0</version>
 
     <name>Sortable Demo</name>
     <packaging>war</packaging>
@@ -16,7 +16,7 @@
     </organization>
 
     <properties>
-        <vaadin.version>14.3.2</vaadin.version>
+        <vaadin.version>14.5.3</vaadin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -122,7 +122,7 @@
         <dependency>
             <groupId>org.vaadin.jchristophe</groupId>
             <artifactId>sortable-layout</artifactId>
-            <version>0.5.0</version>
+            <version>1.0.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.vaadin/flow-component-demo-helpers -->
         <dependency>

@@ -1,0 +1,68 @@
+.trello {
+    background-color: var(--lumo-tint-40pct);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: var(--lumo-space-m);
+    row-gap: var(--lumo-space-m);
+    height: 100%;
+}
+
+.trello__column {
+    height: 100%;
+    background-color: var(--lumo-primary-color-10pct);
+    border-radius: var(--lumo-space-xs);
+    box-shadow: var(--lumo-box-shadow-s);
+    margin:var(--lumo-space-m);
+}
+
+
+.trello__column__title {
+    background-color: var(--lumo-primary-color);
+    color: var(--lumo-primary-contrast-color);
+    border-radius: var(--lumo-space-xs) var(--lumo-space-xs) 0 0;
+    padding: var(--lumo-space-s);
+}
+
+.trello__column--inprogress .trello__column__title {
+    background-color: var(--lumo-secondary-text-color);
+}
+
+.trello__column--complete .trello__column__title {
+    background-color: var(--lumo-success-color);
+}
+
+.trello__column__task {
+    background-color: var(--lumo-primary-contrast-color);
+    padding: var(--lumo-space-s);
+    margin: var(--lumo-space-s);
+    border-radius: var(--lumo-space-xs);
+    box-shadow: var(--lumo-box-shadow-s);
+}
+
+.trello__column__task__title {
+    font-weight: bold;
+}
+
+.trello__column__task__description {
+    color: var(--lumo-contrast-70pct);
+    padding-top: var(--lumo-space-s);
+    font-style: italic;
+}
+
+.ignore-elements {
+    font-style: italic;
+    opacity: 80%;
+}
+
+.trello-sortable-ghost {
+    opacity:70%;
+}
+
+.trello-sortable-chosen {
+    background-color: #919191;
+}
+
+.trello-sortable-drag {
+    background-color:gray;
+    opacity:50%;
+}

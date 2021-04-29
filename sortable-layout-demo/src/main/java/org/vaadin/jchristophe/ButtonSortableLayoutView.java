@@ -11,7 +11,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 @CssImport("./demo.css")
-@Route("buttons")
+@Route(value = "buttons", layout = MainLayout.class)
 public class ButtonSortableLayoutView extends Div {
 
     private VerticalLayout verticalLayout;

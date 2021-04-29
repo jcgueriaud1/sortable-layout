@@ -10,7 +10,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
 
 @CssImport("./demo.css")
-@Route("twolayouts")
+@Route(value = "twolayouts", layout = MainLayout.class)
 public class TwoLayoutsView extends HorizontalLayout {
 
     private SortableLayout rightSortableLayout;
