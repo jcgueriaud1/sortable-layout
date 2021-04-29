@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.jchristophe</groupId>
     <artifactId>sortable-layout</artifactId>
-    <version>0.5.0</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>sortable-layout</name>

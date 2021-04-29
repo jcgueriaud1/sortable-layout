@@ -7,10 +7,12 @@ import com.vaadin.flow.component.html.Div;
  */
 public class TrelloTask extends Div {
 
+    private String titleText;
 
-    public TrelloTask(String title, String description) {
+    public TrelloTask(String titleText, String description) {
+        this.titleText = titleText;
         Div titleBlock = new Div();
-        titleBlock.setText(title);
+        titleBlock.setText(titleText);
         titleBlock.addClassName("trello__column__task__title");
         Div descriptionBlock = new Div();
         descriptionBlock.setText(description);
@@ -18,5 +20,9 @@ public class TrelloTask extends Div {
 
         add(titleBlock, descriptionBlock);
         addClassName("trello__column__task");
+    }
+
+    public String getTitleText() {
+        return titleText;
     }
 }

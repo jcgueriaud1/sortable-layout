@@ -8,9 +8,7 @@ import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
 
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -144,12 +142,13 @@ public class SortableLayout extends Div {
     @ClientCallable
     private void onAddListener(int newIndex, boolean clone) {
         logger.finest("Add listener called drop index=" + newIndex);
-        Component removedComponent = supplyComponentFunction.get();
-        ((HasComponents) getLayout()).addComponentAtIndex(newIndex, removedComponent);
+        Component addedComponent = supplyComponentFunction.get();
+        ((HasComponents) getLayout()).addComponentAtIndex(newIndex, addedComponent);
 
         if (onOrderChanged != null) {
-            onOrderChanged.accept(removedComponent);
+            onOrderChanged.accept(addedComponent);
         }
+        fireEvent(new SortableComponentAddEvent(this,true, addedComponent));
     }
 
     @ClientCallable
@@ -165,6 +164,7 @@ public class SortableLayout extends Div {
         if (onOrderChanged != null) {
             onOrderChanged.accept(removedComponent);
         }
+        fireEvent(new SortableComponentDeleteEvent(this,true, removedComponent));
     }
 
     public void setOnOrderChanged(SerializableConsumer<Component> onOrderChanged) {
@@ -188,41 +188,46 @@ public class SortableLayout extends Div {
         storeComponentFunction = group::setRemoveComponent;
     }
 
-    private final Set<SortableComponentAddEvent> sortableComponentAddListeners = new LinkedHashSet<>();
-
-    public Registration addSortableComponentAddListeners(SortableComponentAddEvent listener) {
-        sortableComponentAddListeners.add(listener);
-        return () -> sortableComponentAddListeners.remove(listener);
+    @SuppressWarnings("unchecked")
+    public Registration addSortableComponentAddListener(ComponentEventListener<SortableComponentAddEvent> listener) {
+        return addListener(SortableComponentAddEvent.class, (ComponentEventListener) listener);
     }
 
-
-    private final Set<SortableComponentDeleteEvent> sortableComponentDeleteListeners = new LinkedHashSet<>();
-
-    public Registration addSortableComponentDeleteListeners(SortableComponentDeleteEvent listener) {
-        sortableComponentDeleteListeners.add(listener);
-        return () -> sortableComponentDeleteListeners.remove(listener);
+    @SuppressWarnings("unchecked")
+    public Registration addSortableComponentDeleteListener(ComponentEventListener<SortableComponentDeleteEvent> listener) {
+        return addListener(SortableComponentDeleteEvent.class, (ComponentEventListener) listener);
     }
 
-    private final Set<SortableComponentReorderEvent> sortableComponentReorderListeners = new LinkedHashSet<>();
-
-    public Registration addSortableComponentReorderListeners(SortableComponentReorderEvent listener) {
-        sortableComponentReorderListeners.add(listener);
-        return () -> sortableComponentReorderListeners.remove(listener);
+    @SuppressWarnings("unchecked")
+    public Registration addSortableComponentReorderListener(ComponentEventListener<SortableComponentReorderEvent> listener) {
+        return addListener(SortableComponentReorderEvent.class, (ComponentEventListener) listener);
     }
 
     public static class SortableComponentAddEvent extends ComponentEvent<SortableLayout> {
 
-        public SortableComponentAddEvent(SortableLayout source, boolean fromClient) {
+        private final Component component;
+
+        public SortableComponentAddEvent(SortableLayout source, boolean fromClient, Component component) {
             super(source, fromClient);
-            
+            this.component = component;
+        }
+
+        public Component getComponent() {
+            return component;
         }
     }
 
     public static class SortableComponentDeleteEvent extends ComponentEvent<SortableLayout> {
 
-        public SortableComponentDeleteEvent(SortableLayout source, boolean fromClient) {
-            super(source, fromClient);
+        private final Component component;
 
+        public SortableComponentDeleteEvent(SortableLayout source, boolean fromClient, Component component) {
+            super(source, fromClient);
+            this.component = component;
+        }
+
+        public Component getComponent() {
+            return component;
         }
     }
     public static class SortableComponentReorderEvent extends ComponentEvent<SortableLayout> {

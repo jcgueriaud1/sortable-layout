@@ -2,6 +2,7 @@ package org.vaadin.jchristophe;
 
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.router.Route;
 import org.vaadin.jchristophe.trello.TrelloColumn;
 import org.vaadin.jchristophe.trello.TrelloTask;
@@ -41,6 +42,15 @@ public class TrelloLayoutView extends Div {
         completeColumn.addClassName("trello__column--complete");
         completeSortableLayout = new SortableLayout(completeColumn, sortableConfig,
                 group);
+
+        completeSortableLayout.addSortableComponentAddListener(e -> {
+            if (e.getComponent() instanceof TrelloTask) {
+                TrelloTask trelloTask = (TrelloTask) e.getComponent();
+                Notification.show(trelloTask.getTitleText() + " has been completed");
+            } else {
+                Notification.show( " has been completed");
+            }
+        });
         /*completeSortableLayout.setOnOrderChanged(e -> {
             e
         });*/
