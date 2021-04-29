@@ -137,6 +137,7 @@ public class SortableLayout extends Div {
         if (onOrderChanged != null) {
             onOrderChanged.accept(component);
         }
+        fireEvent(new SortableComponentReorderEvent(this,true, component));
     }
 
     @ClientCallable
@@ -167,10 +168,20 @@ public class SortableLayout extends Div {
         fireEvent(new SortableComponentDeleteEvent(this,true, removedComponent));
     }
 
+    /**
+     * @deprecated  use the listener instead
+     *
+     * @param onOrderChanged function called when a component is reordered or moved
+     */
+    @Deprecated
     public void setOnOrderChanged(SerializableConsumer<Component> onOrderChanged) {
         this.onOrderChanged = onOrderChanged;
     }
 
+    /**
+     *
+     * @return the list of components in the right order
+     */
     public List<Component> getComponents() {
         return getLayout().getChildren().collect(Collectors.toList());
     }
@@ -187,17 +198,32 @@ public class SortableLayout extends Div {
         supplyComponentFunction = group::getRemoveComponent;
         storeComponentFunction = group::setRemoveComponent;
     }
-
+    /**
+     * Adds a add listener to this component. Called when a component is dropped inside the component
+     *
+     * @param listener the listener to add, not <code>null</code>
+     * @return a handle that can be used for removing the listener
+     */
     @SuppressWarnings("unchecked")
     public Registration addSortableComponentAddListener(ComponentEventListener<SortableComponentAddEvent> listener) {
         return addListener(SortableComponentAddEvent.class, (ComponentEventListener) listener);
     }
-
+    /**
+     * Adds a delete listener to this component. Called when a component is dropped outside the component
+     *
+     * @param listener the listener to add, not <code>null</code>
+     * @return a handle that can be used for removing the listener
+     */
     @SuppressWarnings("unchecked")
     public Registration addSortableComponentDeleteListener(ComponentEventListener<SortableComponentDeleteEvent> listener) {
         return addListener(SortableComponentDeleteEvent.class, (ComponentEventListener) listener);
     }
-
+    /**
+     * Adds a reorder listener to this component.
+     *
+     * @param listener the listener to add, not <code>null</code>
+     * @return a handle that can be used for removing the listener
+     */
     @SuppressWarnings("unchecked")
     public Registration addSortableComponentReorderListener(ComponentEventListener<SortableComponentReorderEvent> listener) {
         return addListener(SortableComponentReorderEvent.class, (ComponentEventListener) listener);
@@ -212,6 +238,10 @@ public class SortableLayout extends Div {
             this.component = component;
         }
 
+        /**
+         *
+         * @return added component
+         */
         public Component getComponent() {
             return component;
         }
@@ -226,14 +256,29 @@ public class SortableLayout extends Div {
             this.component = component;
         }
 
+        /**
+         *
+         * @return deleted component
+         */
         public Component getComponent() {
             return component;
         }
     }
     public static class SortableComponentReorderEvent extends ComponentEvent<SortableLayout> {
 
-        public SortableComponentReorderEvent(SortableLayout source, boolean fromClient) {
+        private final Component component;
+
+        public SortableComponentReorderEvent(SortableLayout source, boolean fromClient, Component component) {
             super(source, fromClient);
+            this.component = component;
+        }
+
+        /**
+         *
+         * @return reordered component
+         */
+        public Component getComponent() {
+            return component;
         }
     }
 }
