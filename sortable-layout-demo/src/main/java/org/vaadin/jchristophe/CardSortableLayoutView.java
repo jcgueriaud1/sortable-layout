@@ -15,7 +15,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 @CssImport("./demo.css")
-@Route("card")
+@Route(value = "card", layout = MainLayout.class)
 public class CardSortableLayoutView extends Div {
 
     private HorizontalLayout mainLayout = new HorizontalLayout();

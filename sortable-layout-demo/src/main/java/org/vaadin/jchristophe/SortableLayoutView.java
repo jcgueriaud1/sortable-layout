@@ -9,7 +9,7 @@ import com.vaadin.flow.demo.DemoView;
 import com.vaadin.flow.router.Route;
 
 @CssImport("./demo.css")
-@Route("")
+@Route(value = "")
 public class SortableLayoutView extends DemoView {
 
     @Override
