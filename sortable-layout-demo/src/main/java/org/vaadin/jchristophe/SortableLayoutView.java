@@ -20,7 +20,7 @@ public class SortableLayoutView extends DemoView {
         createGroupExample();
         createFilterExample();
         createColorExample();
-        //createMultiDragExample();
+        createMultiDragExample();
     }
 
 

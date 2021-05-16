@@ -40,8 +40,8 @@ public class TwoLayoutsView extends HorizontalLayout {
 
         add(leftSortableLayout, rightSortableLayout);
 
-        leftSortableLayout.setOnOrderChanged(c -> showNotification(c, leftSortableLayout));
-        rightSortableLayout.setOnOrderChanged(c -> showNotification(c, rightSortableLayout));
+        leftSortableLayout.addSortableComponentReorderListener(e -> showNotification(e.getComponent(), leftSortableLayout));
+        rightSortableLayout.addSortableComponentReorderListener(e -> showNotification(e.getComponent(), rightSortableLayout));
     }
 
     private static Component cloneComponent(Component component) {
