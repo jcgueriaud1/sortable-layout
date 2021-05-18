@@ -13,9 +13,10 @@ public class MainLayout extends AppLayout {
         final DrawerToggle drawerToggle = new DrawerToggle();
         final RouterLink simple = new RouterLink("Simple demos", SortableLayoutView.class);
         final RouterLink twoLayout = new RouterLink("TwoLayout", TwoLayoutsView.class);
+        final RouterLink multiDragLayout = new RouterLink("Multiple drag", MultiDragTwoLayoutsView.class);
         final RouterLink trello = new RouterLink("Trello-like", TrelloLayoutView.class);
         final RouterLink card = new RouterLink("Card", CardSortableLayoutView.class);
-        final VerticalLayout menuLayout = new VerticalLayout(twoLayout, simple, trello, card);
+        final VerticalLayout menuLayout = new VerticalLayout(twoLayout, multiDragLayout, simple, trello, card);
         addToDrawer(menuLayout);
         addToNavbar(drawerToggle);
     }
