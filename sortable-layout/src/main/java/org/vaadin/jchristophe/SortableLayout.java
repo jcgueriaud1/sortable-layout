@@ -16,6 +16,8 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.min;
+
 /**
  * This invisible layout adds drag and drop capacity to the component added.
  *
@@ -47,8 +49,9 @@ public class SortableLayout extends Div {
 
     private boolean disabledSort = false;
 
-    private Supplier<Component> supplyComponentFunction;
+    private Supplier<List<Component>> supplyComponentFunction;
     private Consumer<Component> storeComponentFunction;
+    private Runnable clearComponentFunction;
 
     /**
      * Make the layout reorderable
@@ -150,69 +153,73 @@ public class SortableLayout extends Div {
     @ClientCallable
     private void onReorderListener(JsonArray oldIndexes, JsonArray newIndexes) {
         List<Component> components = new ArrayList<>();
+        int smallestNewIndex = Integer.MAX_VALUE;
         for (int i = 0; i < oldIndexes.length(); i++) {
             int oldIndex = (int) oldIndexes.get(i).asNumber();
             int newIndex = (int) newIndexes.get(i).asNumber();
-            logger.finest("Reorder listener called drag index=" + oldIndex
+            smallestNewIndex = min(newIndex, smallestNewIndex);
+            logger.severe("Reorder listener called drag index=" + oldIndex
                     + " drop index= " + newIndex);
             Component component = getComponents().get(oldIndex);
-            components.add(component);
-        }
-        for (int i = 0; i < components.size(); i++) {
-            Component component = components.get(i);
             ((HasComponents) getLayout()).remove(component);
-        }
-
-        for (int i = 0; i < components.size(); i++) {
-            Component component = components.get(i);
-            int newIndex = (int) newIndexes.get(i).asNumber();
             ((HasComponents) getLayout()).addComponentAtIndex(newIndex, component);
             if (onOrderChanged != null) {
                 onOrderChanged.accept(component);
             }
         }
+
         fireEvent(new SortableComponentReorderEvent(this,true, components));
     }
 
     @ClientCallable
-    private void onAddListener(JsonArray newIndexes, boolean clone) {
-        List<Component> addedComponents = new ArrayList<>();
+    protected void onAddListener(JsonArray newIndexes, boolean clone) {
+        List<Component> addedComponents = supplyComponentFunction.get();
+        int smallestNewIndex = Integer.MAX_VALUE;
         for (int i = 0; i < newIndexes.length(); i++) {
             int newIndex = (int) newIndexes.get(i).asNumber();
-            logger.finest("Add listener called drop index=" + newIndex);
-            Component addedComponent = supplyComponentFunction.get();
-            addedComponents.add(addedComponent);
-            ((HasComponents) getLayout()).addComponentAtIndex(newIndex, addedComponent);
+            if (newIndex < 0) {
+                // there is an issue in sortable layout when the index can be negative
+                logger.severe("Add listener called drop index=" + newIndex);
+            } else {
+                smallestNewIndex = min(newIndex, smallestNewIndex);
+            }
+        }
+        // add all the entries in the
+        Element[] elements = addedComponents.stream().map(Component::getElement).toArray(Element[]::new);
+        getLayout().getElement().insertChild(smallestNewIndex, elements);
 
+        for (int i = 0; i < addedComponents.size(); i++) {
+            Component addedComponent = addedComponents.get(i);
             if (onOrderChanged != null) {
                 onOrderChanged.accept(addedComponent);
             }
         }
-        fireEvent(new SortableComponentAddEvent(this,true, addedComponents));
+        clearComponentFunction.run();
+        fireEvent(new SortableComponentAddEvent(this, true, addedComponents));
     }
 
     @ClientCallable
-    private void onRemoveListener(JsonArray oldIndexes, boolean clone) {
+    private void onRemoveListener(JsonArray oldIndexes, JsonArray newIndexes, boolean clone) {
+        System.out.println("Before remove "+getLayout().getChildren().count());
         List<Component> removedComponents = new ArrayList<>();
         for (int i = 0; i < oldIndexes.length(); i++) {
             int oldIndex = (int) oldIndexes.get(i).asNumber();
-            logger.finest("remove listener called drag index=" + oldIndex);
+            logger.severe("remove listener called drag index=" + oldIndex);
             Component removedComponent = getComponents().get(oldIndex);
             removedComponents.add(removedComponent);
         }
         for (int i = 0; i < removedComponents.size(); i++) {
             Component removedComponent = removedComponents.get(i);
-            int oldIndex = (int) oldIndexes.get(i).asNumber();
             storeComponentFunction.accept(removedComponent);
             if (clone) { // remove the component if clone and replace it by a clone
-                ((HasComponents) getLayout()).remove(removedComponent);
                 Component clonedComponent = cloneFunction.clone(removedComponent);
-                ((HasComponents) getLayout()).addComponentAtIndex(oldIndex, clonedComponent);
+                replace((HasComponents) getLayout(), removedComponent, clonedComponent);
             }
             if (onOrderChanged != null) {
                 onOrderChanged.accept(removedComponent);
             }
         }
+
         fireEvent(new SortableComponentDeleteEvent(this,true, removedComponents));
     }
 
@@ -241,10 +248,10 @@ public class SortableLayout extends Div {
             return layout;
         }
     }
-
     private void setGroup(SortableGroupStore group) {
-        supplyComponentFunction = group::getRemoveComponent;
-        storeComponentFunction = group::setRemoveComponent;
+        supplyComponentFunction = group::getRemoveComponents;
+        storeComponentFunction = group::addRemoveComponent;
+        clearComponentFunction = group::clearRemoveComponents;
     }
     /**
      * Adds a add listener to this component. Called when a component is dropped inside the component
@@ -338,6 +345,30 @@ public class SortableLayout extends Div {
 
         public List<Component> getComponents() {
             return components;
+        }
+    }
+
+    private static void replace(HasComponents layout, Component oldComponent, Component newComponent) {
+        if (oldComponent == null && newComponent == null) {
+            // NO-OP
+            return;
+        }
+        if (oldComponent == null) {
+            layout.add(newComponent);
+        } else if (newComponent == null) {
+            layout.remove(oldComponent);
+        } else {
+            Element element = layout.getElement();
+            int oldIndex = element.indexOfChild(oldComponent.getElement());
+            int newIndex = element.indexOfChild(newComponent.getElement());
+            if (oldIndex >= 0 && newIndex >= 0) {
+                element.insertChild(oldIndex, newComponent.getElement());
+                element.insertChild(newIndex, oldComponent.getElement());
+            } else if (oldIndex >= 0) {
+                element.setChild(oldIndex, newComponent.getElement());
+            } else {
+                layout.add(newComponent);
+            }
         }
     }
 }

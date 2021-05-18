@@ -32,6 +32,11 @@ public class SortableConfig implements JsonSerializable {
         return sort;
     }
 
+    /**
+     * Enable sorting in this list, default true
+     *
+     * @param sort true to enable reordering
+     */
     public void setSort(boolean sort) {
         this.sort = sort;
     }
@@ -40,6 +45,11 @@ public class SortableConfig implements JsonSerializable {
         return delay;
     }
 
+    /**
+     * time in milliseconds to define when the sorting should start
+     * Default 0
+     * @param delay time in milliseconds
+     */
     public void setDelay(int delay) {
         this.delay = delay;
     }
@@ -48,6 +58,11 @@ public class SortableConfig implements JsonSerializable {
         return delayOnTouchOnly;
     }
 
+    /**
+     * only delay if user is using touch
+     * default false
+     * @param delayOnTouchOnly true to delay on touch
+     */
     public void setDelayOnTouchOnly(boolean delayOnTouchOnly) {
         this.delayOnTouchOnly = delayOnTouchOnly;
     }
@@ -56,6 +71,10 @@ public class SortableConfig implements JsonSerializable {
         return touchStartThreshold;
     }
 
+    /**
+     * px, how many pixels the point should move before cancelling a delayed drag event
+     * @param touchStartThreshold value in px
+     */
     public void setTouchStartThreshold(int touchStartThreshold) {
         this.touchStartThreshold = touchStartThreshold;
     }
@@ -64,6 +83,11 @@ public class SortableConfig implements JsonSerializable {
         return disabled;
     }
 
+    /**
+     * Disables the sortable if set to true.
+     * default false
+     * @param disabled true to disable the sort
+     */
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
@@ -72,6 +96,11 @@ public class SortableConfig implements JsonSerializable {
         return animation;
     }
 
+    /**
+     * animation speed moving items when sorting, `0` — without animation
+     * default 150
+     * @param animation time of the animation in ms
+     */
     public void setAnimation(int animation) {
         this.animation = animation;
     }
@@ -132,8 +161,9 @@ public class SortableConfig implements JsonSerializable {
     }
 
     /**
+     * Set the Class name for the chosen item
      * default sortable-chosen
-     * @param chosenClass
+     * @param chosenClass Class name for the chosen item
      */
     public void setChosenClass(String chosenClass) {
         this.chosenClass = chosenClass;
@@ -145,8 +175,9 @@ public class SortableConfig implements JsonSerializable {
 
 
     /**
+     * Set Class name for the dragging item
      * default sortable-drag
-     * @param dragClass
+     * @param dragClass Class name for the dragging item
      */
     public void setDragClass(String dragClass) {
         this.dragClass = dragClass;
@@ -156,6 +187,10 @@ public class SortableConfig implements JsonSerializable {
         return selectedClass;
     }
 
+    /**
+     *
+     * @param selectedClass
+     */
     public void setSelectedClass(String selectedClass) {
         this.selectedClass = selectedClass;
     }
