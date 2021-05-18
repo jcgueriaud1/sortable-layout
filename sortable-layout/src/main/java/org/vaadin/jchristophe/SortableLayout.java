@@ -158,7 +158,7 @@ public class SortableLayout extends Div {
             int oldIndex = (int) oldIndexes.get(i).asNumber();
             int newIndex = (int) newIndexes.get(i).asNumber();
             smallestNewIndex = min(newIndex, smallestNewIndex);
-            logger.severe("Reorder listener called drag index=" + oldIndex
+            logger.finest("Reorder listener called drag index=" + oldIndex
                     + " drop index= " + newIndex);
             Component component = getComponents().get(oldIndex);
             ((HasComponents) getLayout()).remove(component);
@@ -179,7 +179,7 @@ public class SortableLayout extends Div {
             int newIndex = (int) newIndexes.get(i).asNumber();
             if (newIndex < 0) {
                 // there is an issue in sortable layout when the index can be negative
-                logger.severe("Add listener called drop index=" + newIndex);
+                logger.finest("Add listener called drop index=" + newIndex);
             } else {
                 smallestNewIndex = min(newIndex, smallestNewIndex);
             }
@@ -199,12 +199,11 @@ public class SortableLayout extends Div {
     }
 
     @ClientCallable
-    private void onRemoveListener(JsonArray oldIndexes, JsonArray newIndexes, boolean clone) {
-        System.out.println("Before remove "+getLayout().getChildren().count());
+    private void onRemoveListener(JsonArray oldIndexes, boolean clone) {
         List<Component> removedComponents = new ArrayList<>();
         for (int i = 0; i < oldIndexes.length(); i++) {
             int oldIndex = (int) oldIndexes.get(i).asNumber();
-            logger.severe("remove listener called drag index=" + oldIndex);
+            logger.finest("remove listener called drag index=" + oldIndex);
             Component removedComponent = getComponents().get(oldIndex);
             removedComponents.add(removedComponent);
         }
