@@ -43,3 +43,7 @@
     color: yellow;
     background-color:var(--lumo-contrast-50pct);
 }
+
+.chosen-layout {
+    border: 1px solid red;
+}

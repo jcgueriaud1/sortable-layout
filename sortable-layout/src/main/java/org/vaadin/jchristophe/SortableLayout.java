@@ -161,6 +161,7 @@ public class SortableLayout extends Div {
             logger.finest("Reorder listener called drag index=" + oldIndex
                     + " drop index= " + newIndex);
             Component component = getComponents().get(oldIndex);
+            components.add(component);
             ((HasComponents) getLayout()).remove(component);
             ((HasComponents) getLayout()).addComponentAtIndex(newIndex, component);
             if (onOrderChanged != null) {
@@ -368,6 +369,32 @@ public class SortableLayout extends Div {
             } else {
                 layout.add(newComponent);
             }
+        }
+    }
+
+    public Registration addChooseListener(ComponentEventListener<ChooseEvent> listener) {
+        return addListener(ChooseEvent.class, listener);
+    }
+
+    public Registration addUnchooseListener(ComponentEventListener<UnchooseEvent> listener) {
+        return addListener(UnchooseEvent.class, listener);
+    }
+
+    @DomEvent("on-choose")
+    public static class ChooseEvent
+            extends ComponentEvent<SortableLayout> {
+        public ChooseEvent(SortableLayout source,
+                           boolean fromClient) {
+            super(source, fromClient);
+        }
+    }
+
+    @DomEvent("on-unchoose")
+    public static class UnchooseEvent
+            extends ComponentEvent<SortableLayout> {
+        public UnchooseEvent(SortableLayout source,
+                             boolean fromClient) {
+            super(source, fromClient);
         }
     }
 }

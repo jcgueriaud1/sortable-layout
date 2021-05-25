@@ -44,5 +44,13 @@ window.Vaadin.Flow.sortableConnector = {
 
             }
         }
+
+        c.$connector.sortable.options.onChoose = function (/**Event*/evt) {
+            c.dispatchEvent(new CustomEvent('on-choose'));
+        }
+
+        c.$connector.sortable.options.onUnchoose = function (/**Event*/evt) {
+            c.dispatchEvent(new CustomEvent('on-unchoose'));
+        }
     }
 }
