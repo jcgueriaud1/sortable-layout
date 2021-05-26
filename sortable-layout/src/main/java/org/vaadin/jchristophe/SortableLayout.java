@@ -380,6 +380,10 @@ public class SortableLayout extends Div {
         return addListener(UnchooseEvent.class, listener);
     }
 
+    public Registration addChangeListener(ComponentEventListener<ChangeEvent> listener) {
+        return addListener(ChangeEvent.class, listener);
+    }
+
     @DomEvent("on-choose")
     public static class ChooseEvent
             extends ComponentEvent<SortableLayout> {
@@ -393,6 +397,15 @@ public class SortableLayout extends Div {
     public static class UnchooseEvent
             extends ComponentEvent<SortableLayout> {
         public UnchooseEvent(SortableLayout source,
+                             boolean fromClient) {
+            super(source, fromClient);
+        }
+    }
+
+    @DomEvent("on-change")
+    public static class ChangeEvent
+            extends ComponentEvent<SortableLayout> {
+        public ChangeEvent(SortableLayout source,
                              boolean fromClient) {
             super(source, fromClient);
         }
