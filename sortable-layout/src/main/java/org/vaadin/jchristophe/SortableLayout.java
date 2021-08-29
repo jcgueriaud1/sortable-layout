@@ -24,7 +24,7 @@ import static java.lang.Integer.min;
  *
  */
 @Tag("sortable")
-@NpmPackage(value = "sortablejs", version = "1.13.0")
+@NpmPackage(value = "sortablejs", version = "1.14.0")
 @JavaScript("./sortableConnector.js")
 public class SortableLayout extends Div {
 

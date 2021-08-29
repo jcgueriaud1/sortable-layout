@@ -40,7 +40,6 @@ window.Vaadin.Flow.sortableConnector = {
                         evt.clones.forEach(clone => clone.parentNode.removeChild(clone));
                     }
                 }
-                ;
 
             }
         }

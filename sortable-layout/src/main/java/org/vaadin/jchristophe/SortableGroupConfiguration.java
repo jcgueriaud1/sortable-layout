@@ -15,9 +15,9 @@ public class SortableGroupConfiguration implements JsonSerializable {
 
     private String name;
     // put
-    private List<String> groupNameDragInAllowed = new ArrayList<>();
+    private final List<String> groupNameDragInAllowed = new ArrayList<>();
     // pull
-    private List<String> groupNameDragOutAllowed = new ArrayList<>();
+    private final List<String> groupNameDragOutAllowed = new ArrayList<>();
     // pull
     private boolean dragOutAllowed = true;
     // pull
@@ -30,6 +30,11 @@ public class SortableGroupConfiguration implements JsonSerializable {
         return name;
     }
 
+    /**
+     * Set the group name
+     *
+     * @param name group name
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -38,6 +43,14 @@ public class SortableGroupConfiguration implements JsonSerializable {
         return dragOutAllowed;
     }
 
+    /**
+     * Ability to move from the list.
+     * - true to be able to move the items from the list
+     * - false to allow only reorder
+     * @see #addDragOutGroupName(String) to restrict the group which the elements may be put in
+     *
+     * @param dragOutAllowed  Defaults to true.
+     */
     public void setDragOutAllowed(boolean dragOutAllowed) {
         this.dragOutAllowed = dragOutAllowed;
     }
@@ -46,14 +59,30 @@ public class SortableGroupConfiguration implements JsonSerializable {
         return dragInAllowed;
     }
 
+    /**
+     * whether elements can be added from other lists.
+     * - true to be able to move in the list
+     * - false to allow only reorder
+     * @see #addDragInGroupName(String) to restrict the group from which elements can be added.
+     *
+     * @param dragInAllowed Defaults to true.
+     */
     public void setDragInAllowed(boolean dragInAllowed) {
         this.dragInAllowed = dragInAllowed;
     }
 
+    /**
+     *
+     * @param name group name
+     */
     public void addDragInGroupName(String name) {
         groupNameDragInAllowed.add(name);
     }
 
+    /**
+     *
+     * @param name group name
+     */
     public void addDragOutGroupName(String name) {
         groupNameDragOutAllowed.add(name);
     }
@@ -62,6 +91,11 @@ public class SortableGroupConfiguration implements JsonSerializable {
         return clone;
     }
 
+    /**
+     * Whether the previous list keeps a copy of the element
+     * Warning: Can't be used with {@link #addDragOutGroupName(String)}
+     * @param clone true to clone the item
+     */
     public void setClone(boolean clone) {
         this.clone = clone;
     }
