@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class SortableConfig implements JsonSerializable {
 
-    private SortableGroupConfiguration group = new SortableGroupConfiguration();
+    private final SortableGroupConfiguration group = new SortableGroupConfiguration();
     private boolean sort = true;
     private int delay = 0;
     private boolean delayOnTouchOnly;
@@ -18,7 +18,7 @@ public class SortableConfig implements JsonSerializable {
     private boolean disabled = false;
     //store
     private int animation = 0;
-    private List<String> filterClassNames = new ArrayList<>();
+    private final List<String> filterClassNames = new ArrayList<>();
 
     private String ghostClass; // Class name for the drop placeholder
     private String chosenClass; // Class name for the chosen item
@@ -112,30 +112,69 @@ public class SortableConfig implements JsonSerializable {
         filterClassNames.clear();
     }
 
+    /**
+     * set the group name
+     *
+     * @param name group name
+     */
     public void setGroupName(String name) {
         group.setName(name);
     }
 
+    /**
+     * whether elements can be added from other lists.
+     * - true to be able to move in the list
+     * - false to allow only reorder
+     * @see #addDragInGroupName(String) to restrict the group from which elements can be added.
+     *
+     * @param allowed Defaults to true.
+     */
     public void allowDragIn(boolean allowed) {
         group.setDragInAllowed(allowed);
     }
 
-    //pull
+    /**
+     * Ability to move from the list.
+     * - true to be able to move the items from the list
+     * - false to allow only reorder
+     * @see #addDragOutGroupName(String) to restrict the group which the elements may be put in
+     *
+     * See 'pull' in SortableJS
+     *
+     * @param allowed  Defaults to true.
+     */
     public void allowDragOut(boolean allowed) {
         group.setDragOutAllowed(allowed);
     }
 
+    /**
+     * restrict the group from which elements can be added.
+     *
+     * @param name group name
+     */
     public void addDragInGroupName(String name) {
         group.addDragInGroupName(name);
     }
 
+    /**
+     * restrict the group which the elements may be put in
+     *
+     * @param name group name
+     */
     public void addDragOutGroupName(String name) {
         group.addDragOutGroupName(name);
     }
 
+
+    /**
+     * Whether the previous list keeps a copy of the element
+     * Warning: Can't be used with {@link #addDragOutGroupName(String)}
+     * @param clone true to clone the item
+     */
     public void cloneOnDragOut(boolean clone) {
         group.setClone(clone);
     }
+
     public String getGhostClass() {
         return ghostClass;
     }
