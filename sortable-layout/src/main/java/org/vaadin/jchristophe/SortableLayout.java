@@ -214,6 +214,8 @@ public class SortableLayout extends Div {
             if (clone) { // remove the component if clone and replace it by a clone
                 Component clonedComponent = cloneFunction.clone(removedComponent);
                 replace((HasComponents) getLayout(), removedComponent, clonedComponent);
+                runBeforeClientResponse(ui -> getElement()
+                        .callJsFunction("$connector.clearClone"));
             }
             if (onOrderChanged != null) {
                 onOrderChanged.accept(removedComponent);
