@@ -38,6 +38,10 @@ window.Vaadin.Flow.sortableConnector = {
             }
             if (evt.to === evt.from) {
                 c.$server.onReorderListener(oldIndexes, newIndexes);
+                //evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+                //evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+
+                //c.$server.onReorderListenerElement(evt.oldDraggableIndex, evt.newDraggableIndex);
             } else {
                 const clone = (evt.pullMode === 'clone');
                 evt.from.parentElement.$server.onRemoveListener(oldIndexes, clone);

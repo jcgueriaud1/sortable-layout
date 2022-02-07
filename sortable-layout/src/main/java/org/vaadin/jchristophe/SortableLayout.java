@@ -171,6 +171,13 @@ public class SortableLayout extends Div {
 
         fireEvent(new SortableComponentReorderEvent(this,true, components));
     }
+/*
+
+    @ClientCallable
+    private void onReorderListenerElement(Element oldComponent, Element newComponent) {
+        System.out.println("test JCG");
+    }
+*/
 
     @ClientCallable
     protected void onAddListener(JsonArray newIndexes, boolean clone) {
