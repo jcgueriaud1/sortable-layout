@@ -34,4 +34,4 @@ jobs:
     - name: curl to the Vaadin Directory
       uses: wei/curl@v1
       with:
-        args: -X POST "https://vaadin.com/vaadincom/directory-service/upload/sortable-layout" -F "authKey=${{ secrets.DIRECTORY_AUTH_KEY }}" -H "accept: */*" -H "Content-Type: multipart/form-data" -F "file=@sortable-layout/target/sortable-layout*.zip;type=application/zip" -F "releaseNotes=${{ github.event.release.body }}" -F "publish=false"
+        args: -X POST "https://vaadin.com/vaadincom/directory-service/upload/sortable-layout" -F "authKey=${{ secrets.DIRECTORY_AUTH_KEY }}" -H "accept:\ */*" -H "Content-Type:\ multipart/form-data" -F "file=@sortable-layout/target/sortable-layout*.zip;type=application/zip" -F "releaseNotes=${{ github.event.release.body }}" -F "publish=false"
