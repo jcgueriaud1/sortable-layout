@@ -30,7 +30,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -B package -Pdirectory --file pom.xml
+      run: mvn -B install -Pdirectory --file pom.xml
     - name: curl to the Vaadin Directory
       uses: wei/curl@v1
       with:
