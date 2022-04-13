@@ -31,7 +31,9 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn -B install -Pdirectory --file pom.xml
+    - name: Rename the war and remove the version
+      run: mv sortable-layout/target/sortable-layout*.zip sortable-layout.zip
     - name: curl to the Vaadin Directory
       uses: wei/curl@v1
       with:
-        args: -X POST "https://vaadin.com/vaadincom/directory-service/upload/sortable-layout" -F "authKey=${{ secrets.DIRECTORY_AUTH_KEY }}" -F "publish=false" -F "releaseNotes=test" -H "accept:\ */*" -H "Content-Type:\ multipart/form-data" -F "file=@sortable-layout/target/sortable-layout*.zip;type=application/zip"
+        args: -X POST "https://vaadin.com/vaadincom/directory-service/upload/sortable-layout" -F "authKey=${{ secrets.DIRECTORY_AUTH_KEY }}" -F "publish=false" -F "releaseNotes=test" -H "accept:\ */*" -H "Content-Type:\ multipart/form-data" -F "file=@sortable-layout.zip;type=application/zip"
