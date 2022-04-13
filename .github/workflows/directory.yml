@@ -2,7 +2,7 @@ name: 'Publish to the Vaadin Directory'
 
 on:
   push:
-    branches: [ master ]
+    branches: [ testdirectory ]
     
 jobs:
   build:
@@ -34,4 +34,4 @@ jobs:
     - name: curl to the Vaadin Directory
       uses: wei/curl@v1
       with:
-        args: -X POST "https://vaadin.com/vaadincom/directory-service/upload/sortable-layout" -F "authKey=${{ secrets.DIRECTORY_AUTH_KEY }}" -H "accept:\ */*" -H "Content-Type:\ multipart/form-data" -F "file=@sortable-layout/target/sortable-layout-1.1.8.zip;type=application/zip"
+        args: -X POST "https://vaadin.com/vaadincom/directory-service/upload/sortable-layout" -F "authKey=${{ secrets.DIRECTORY_AUTH_KEY }}" -F "publish=false" -F "releaseNotes=test" -H "accept:\ */*" -H "Content-Type:\ multipart/form-data" -F "file=@sortable-layout/target/sortable-layout*.zip;type=application/zip"
