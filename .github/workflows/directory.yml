@@ -1,4 +1,4 @@
-name: 'Publish to the Vaadin Directory'
+name: 'Publish to the Vaadin Directory '
 
 on:
   push:
