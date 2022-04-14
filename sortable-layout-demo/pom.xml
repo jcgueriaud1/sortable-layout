@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.jchristophe</groupId>
     <artifactId>sortable-layout-demo</artifactId>
-    <version>2.0.1</version>
+    <version>1.1.9</version>
 
     <name>Sortable Demo</name>
     <packaging>war</packaging>
@@ -135,7 +135,7 @@
         <dependency>
             <groupId>org.vaadin.jchristophe</groupId>
             <artifactId>sortable-layout</artifactId>
-            <version>2.0.1</version>
+            <version>1.1.9</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.vaadin/flow-component-demo-helpers -->
         <dependency>

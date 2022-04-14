@@ -3,7 +3,7 @@
 
     <groupId>org.vaadin.jchristophe</groupId>
     <artifactId>sortable-layout-root</artifactId>
-    <version>2.0.1</version>
+    <version>1.1.9</version>
     <packaging>pom</packaging>
     <modules>
         <module>sortable-layout</module>
