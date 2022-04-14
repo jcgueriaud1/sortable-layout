@@ -1,8 +1,10 @@
-name: 'Publish to the Vaadin Directory'
+name: 'Publish to the Vaadin Directory '
 
+env:
+  ADDON: sortable-layout
 on:
-  push:
-    branches: [ master ]
+  release:
+    types: [released]
     
 jobs:
   build:
@@ -31,7 +33,9 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn -B install -Pdirectory --file pom.xml
+    - name: Rename the war and remove the version
+      run: mv ${{env.ADDON}}/target/${{env.ADDON}}*.zip ${{env.ADDON}}.zip
     - name: curl to the Vaadin Directory
       uses: wei/curl@v1
       with:
-        args: -X POST "https://vaadin.com/vaadincom/directory-service/upload/sortable-layout" -F "authKey=${{ secrets.DIRECTORY_AUTH_KEY }}" -H "accept:\ */*" -H "Content-Type:\ multipart/form-data" -F "file=@sortable-layout/target/sortable-layout-1.1.8.zip;type=application/zip"
+        args: -X POST "https://vaadin.com/vaadincom/directory-service/upload/${{env.ADDON}}" -F "authKey=${{ secrets.DIRECTORY_AUTH_KEY }}" -F "publish=false" -F "releaseNotes=${{ github.event.release.body }}" -H "accept:\ */*" -H "Content-Type:\ multipart/form-data" -F "file=@${{env.ADDON}}.zip;type=application/zip"
