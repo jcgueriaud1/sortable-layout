@@ -22,6 +22,62 @@ window.Vaadin.Flow.sortableConnector = {
                     }
                 });
                 this.clonedElements = [];
+            },
+
+            moveElement : function(index, direction) {
+                c.$connector.focusedElement = document.activeElement;
+                if (["up", "down"].includes(direction) == false ) {
+                    return false
+                }
+                const sortable = c.$connector.sortable;
+
+                let order = sortable.toArray();
+                const sortableId = order[index];
+                // pull the item we're moving out of the order
+                order.splice(index, 1)
+
+                let newIndex;
+                // put it back in at the correct position
+                if (direction == 'down') {
+                    newIndex = index+1;
+                } else if (direction == 'up') {
+                    newIndex = index-1;
+                }
+                order.splice(newIndex, 0, sortableId);
+                sortable.sort(order, true);
+
+               // c.$server.onReorderListener([index], [newIndex]);
+
+/*                // bail out if we get input that we don't expect
+                if (["up", "down"].includes(direction) == false ) {
+                    return false
+                }
+                if (typeof(c.dataset.sortableId) == 'undefined') {
+                    return false
+                }
+                // `sortableId` is whatever you've set in your sortablejs config for `dataIdAttr`
+                let sortableId = c.dataset.sortableId
+                let order = c.$connector.sortable.toArray()
+               // let index = order.indexOf(sortableId)
+
+                // pull the item we're moving out of the order
+                order.splice(index, 1)
+
+                // put it back in at the correct position
+                if (direction == 'down') {
+                    order.splice(index+1, 0, sortableId)
+                } else if (direction == 'up') {
+                    order.splice(index-1, 0, sortableId)
+                }
+
+                c.$connector.sortable.sort(order, true)*/
+            }
+            ,
+            refocus() {
+                if (c.$connector.focusedElement !== undefined) {
+                    c.$connector.focusedElement.focus();
+                }
+                c.$connector.focusedElement = undefined;
             }
         };
 

@@ -1,5 +1,7 @@
 package org.vaadin.jchristophe;
 
+import javax.swing.event.ChangeEvent;
+
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.NpmPackage;
@@ -132,6 +134,15 @@ public class SortableLayout extends Div {
         setOption("animation", value);
     }
 
+    /**
+     * set the dataIdAttr attribute
+     *
+     * @param dataIdAttr HTML attribute that is used by the `toArray()` method, Default data-id
+     */
+    public void setDataIdAttr(String dataIdAttr) {
+        setOption("dataIdAttr", dataIdAttr);
+    }
+
     public void setOption(String option, String value) {
         runBeforeClientResponse(ui -> getElement()
                 .callJsFunction("$connector.setOption", option,
@@ -168,8 +179,9 @@ public class SortableLayout extends Div {
                 onOrderChanged.accept(component);
             }
         }
-
         fireEvent(new SortableComponentReorderEvent(this,true, components));
+        runBeforeClientResponse(ui -> getElement()
+                .callJsFunction("$connector.refocus"));
     }
 /*
 
@@ -248,6 +260,22 @@ public class SortableLayout extends Div {
      */
     public List<Component> getComponents() {
         return getLayout().getChildren().collect(Collectors.toList());
+    }
+
+    public void moveUp(Component component) {
+        Element element = layout.getElement();
+        int index = element.indexOfChild(component.getElement());
+        if (index > 0) {
+            runBeforeClientResponse(ui -> getElement()
+                    .callJsFunction("$connector.moveElement", index, "up"));
+        }
+    }
+
+    public void moveDown(Component component) {
+        Element element = layout.getElement();
+        int index = element.indexOfChild(component.getElement());
+        runBeforeClientResponse(ui -> getElement()
+                .callJsFunction("$connector.moveElement", index, "down"));
     }
 
     private Component getLayout() {

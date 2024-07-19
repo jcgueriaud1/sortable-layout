@@ -3,16 +3,17 @@ package org.vaadin.jchristophe;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@CssImport("./demo.css")
+@PageTitle("Button demo")
 @Route(value = "buttons", layout = MainLayout.class)
-public class ButtonSortableLayoutView extends Div {
+public class ButtonSortableLayoutView extends Main {
 
     private VerticalLayout verticalLayout;
     private SortableLayout sortableLayout;

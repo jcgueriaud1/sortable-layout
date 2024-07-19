@@ -2,14 +2,14 @@ package org.vaadin.jchristophe;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasText;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@CssImport("./demo.css")
+@PageTitle("Two columns demo")
 @Route(value = "twolayouts", layout = MainLayout.class)
 public class TwoLayoutsView extends HorizontalLayout {
 

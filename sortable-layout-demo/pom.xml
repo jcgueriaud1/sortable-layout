@@ -9,20 +9,19 @@
     <version>2.0.0</version>
 
     <name>Sortable Demo</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <organization>
         <name>Jean-Christophe Gueriaud</name>
     </organization>
 
     <properties>
-        <java.version>11</java.version>
-        <vaadin.version>23.0.0.beta1</vaadin.version>
+        <vaadin.version>24.3.3</vaadin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <licenses>
@@ -32,6 +31,12 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.2</version>
+        <relativePath/>
+    </parent>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -79,101 +84,44 @@
             <groupId>com.vaadin</groupId>
             <!-- Replace artifactId with vaadin-core to use only free components -->
             <artifactId>vaadin-core</artifactId>
-
-            <exclusions>
-                <!-- Webjars are only needed when running in Vaadin 13 compatibility mode -->
-                <!-- We have to exclude here as well, otherwise the commercial components which are Polymer 2/3 hybrids will bring in polymer 2 and webjars-->
-                <exclusion>
-                    <groupId>com.vaadin.webjar</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.insites</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.polymer</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.polymerelements</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.vaadin</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.webcomponents</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.npm</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.appreciated</groupId>
-            <artifactId>card</artifactId>
-            <version>2.0.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.webjars.npm</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion></exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.appreciated</groupId>
-            <artifactId>vaadin-css-grid</artifactId>
-            <version>2.0.0.beta3</version>
-            <exclusions>
-            <exclusion>
-                <groupId>org.webjars.npm</groupId>
-                <artifactId>*</artifactId>
-            </exclusion></exclusions>
         </dependency>
         <dependency>
             <groupId>org.vaadin.jchristophe</groupId>
             <artifactId>sortable-layout</artifactId>
-            <version>2.0.0</version>
+            <version>3.0.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.vaadin/flow-component-demo-helpers -->
+        <dependency>
+            <groupId>org.parttio</groupId>
+            <artifactId>accessibility-checker-for-vaadin</artifactId>
+            <version>0.0.17-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>flow-component-demo-helpers</artifactId>
-            <version>9.0.5</version>
+            <artifactId>vaadin-spring-boot-starter</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
     <build>
-
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
+        <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
-            <!-- Jetty plugin for easy testing without a server -->
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.15.v20190215</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- Clean build and startup time for Vaadin apps sometimes may exceed
+                     the default Spring Boot's 30sec timeout.  -->
                 <configuration>
-                    <scanIntervalSeconds>-1</scanIntervalSeconds>
-                    <stopKey>${project.artifactId}</stopKey>
-                    <stopPort>8081</stopPort>
+                    <jvmArguments>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5397</jvmArguments>
+                    <wait>500</wait>
+                    <maxAttempts>240</maxAttempts>
                 </configuration>
             </plugin>
 
@@ -186,39 +134,29 @@
                         <goals>
                             <goal>prepare-frontend</goal>
                         </goals>
-                        <configuration>
-                            <convertHtml>false</convertHtml>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
-                <configuration>
-                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
-
 
     <profiles>
         <profile>
             <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
-            <properties>
-                <vaadin.productionMode>true</vaadin.productionMode>
-            </properties>
-
             <dependencies>
+                <!-- Exclude development dependencies from production -->
                 <dependency>
                     <groupId>com.vaadin</groupId>
-                    <artifactId>flow-server-production-mode</artifactId>
+                    <artifactId>vaadin-core</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>com.vaadin</groupId>
+                            <artifactId>vaadin-dev</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
             </dependencies>
-
             <build>
                 <plugins>
                     <plugin>
@@ -228,15 +166,15 @@
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>prepare-frontend</goal>
                                     <goal>build-frontend</goal>
                                 </goals>
+                                <phase>compile</phase>
                             </execution>
                         </executions>
                     </plugin>
                 </plugins>
             </build>
         </profile>
-    </profiles>
 
+    </profiles>
 </project>

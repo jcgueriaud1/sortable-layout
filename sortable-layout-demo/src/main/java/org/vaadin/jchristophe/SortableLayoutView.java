@@ -1,64 +1,51 @@
 package org.vaadin.jchristophe;
 
-import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.UnorderedList;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.ListItem;
+import com.vaadin.flow.component.html.Main;
+import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.demo.DemoView;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 
-@CssImport("./demo.css")
-@Route(value = "")
-public class SortableLayoutView extends DemoView {
+@PageTitle("Basic demos")
+@Route(value = "", layout = MainLayout.class)
+public class SortableLayoutView extends Main {
 
-    @Override
-    protected void initView() {
-        getElement().setAttribute("style","max-width:90%;");
+    public SortableLayoutView() {
+        addClassName(LumoUtility.Padding.MEDIUM);
         createBasicExample();
         createAnimationExample();
         createGroupExample();
         createFilterExample();
         createColorExample();
         createMultiDragExample();
+
     }
 
-
     private void createBasicExample() {
-        Div message = createMessageDiv("basic-message");
-
-        // begin-source-example
-        // source-example-heading: Basic Example
         UnorderedList list = new UnorderedList();
         list.add(new ListItem("item 1"),new ListItem("item 2"),new ListItem("item 3"));
         SortableLayout sortableLayout = new SortableLayout(list);
-        // end-source-example
 
-        addCard("Basic Example", sortableLayout, message);
+        addExample("Basic Example", sortableLayout);
     }
 
 
     private void createAnimationExample() {
-        Div message = createMessageDiv("animation-message");
-
-        // begin-source-example
-        // source-example-heading: Animation Example
         UnorderedList list = new UnorderedList();
         list.add(new ListItem("item 1"),new ListItem("item 2"),new ListItem("item 3"));
         SortableConfig config = new SortableConfig();
         config.setAnimation(300);
         SortableLayout sortableLayout = new SortableLayout(list,config);
-        // end-source-example
 
-        addCard("Animation Example", sortableLayout, message);
+        addExample("Animation Example", sortableLayout);
     }
 
 
     private void createGroupExample() {
-        Div message = createMessageDiv("group-message");
-
-        // begin-source-example
-        // source-example-heading: Group Example
         VerticalLayout layout = new VerticalLayout();
         UnorderedList foo = new UnorderedList();
         foo.add(new ListItem("foo 1"),new ListItem("foo 2"),new ListItem("foo 3"));
@@ -84,17 +71,12 @@ public class SortableLayoutView extends DemoView {
         sortableConfigQux.setAnimation(100);
         SortableLayout sortableLayoutQux = new SortableLayout(qux, sortableConfigQux, sortableGroupStore);
         layout.add(sortableLayoutFoo,sortableLayoutBar,sortableLayoutQux);
-        // end-source-example
 
-        addCard("Group Example", layout, message);
+        addExample("Group Example", layout);
     }
 
 
     private void createFilterExample() {
-        Div message = createMessageDiv("filter-message");
-
-        // begin-source-example
-        // source-example-heading: Filter Example
         UnorderedList list = new UnorderedList();
         list.add(new ListItem("item 1"));
         ListItem listItemFilterable = new ListItem("item 2 - is not draggable");
@@ -104,17 +86,12 @@ public class SortableLayoutView extends DemoView {
         SortableConfig sortableConfig = new SortableConfig();
         sortableConfig.addFilter("ignore-elements");
         SortableLayout sortableLayout = new SortableLayout(list, sortableConfig);
-        // end-source-example
 
-        addCard("Filter Example", sortableLayout, message);
+        addExample("Filter Example", sortableLayout);
     }
 
 
     private void createColorExample() {
-        Div message = createMessageDiv("color-message");
-
-        // begin-source-example
-        // source-example-heading: Color Example
         UnorderedList list = new UnorderedList();
         list.add(new ListItem("item 1"),new ListItem("item 2"),new ListItem("item 3"));
         SortableConfig sortableConfig = new SortableConfig();
@@ -122,18 +99,13 @@ public class SortableLayoutView extends DemoView {
         sortableConfig.setDragClass("custom-sortable-drag");
         sortableConfig.setGhostClass("custom-sortable-ghost");
         SortableLayout sortableLayout = new SortableLayout(list, sortableConfig);
-        // end-source-example
 
-        addCard("Color Example", sortableLayout, message);
+        addExample("Color Example", sortableLayout);
     }
 
 
     /// Not working on the server side
     private void createMultiDragExample() {
-        Div message = createMessageDiv("multi-drag-message");
-
-        // begin-source-example
-        // source-example-heading: Multi Drag Example
         UnorderedList list = new UnorderedList();
         list.add(new ListItem("item 1"),new ListItem("item 2"),
                 new ListItem("item 3"),new ListItem("item 4"),
@@ -144,15 +116,12 @@ public class SortableLayoutView extends DemoView {
         sortableConfig.setSelectedClass("selected");
         sortableConfig.setAnimation(150);
         SortableLayout sortableLayout = new SortableLayout(list, sortableConfig);
-        // end-source-example
 
-        addCard("Multi Drag Example", sortableLayout, message);
+        addExample("Multi Drag Example", sortableLayout);
     }
 
-    private Div createMessageDiv(String id) {
-        Div message = new Div();
-        message.setId(id);
-        message.getStyle().set("whiteSpace", "pre");
-        return message;
+    private void addExample(String title, Component component) {
+        add(new H2(title), component);
     }
+
 }

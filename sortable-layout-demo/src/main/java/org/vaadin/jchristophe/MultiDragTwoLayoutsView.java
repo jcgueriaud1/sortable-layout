@@ -1,17 +1,18 @@
 package org.vaadin.jchristophe;
 
+import java.util.List;
+
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasText;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import java.util.List;
 
-@CssImport("./demo.css")
+@PageTitle("Drag multiple items")
 @Route(value = "multidrag", layout = MainLayout.class)
 public class MultiDragTwoLayoutsView extends HorizontalLayout {
 
