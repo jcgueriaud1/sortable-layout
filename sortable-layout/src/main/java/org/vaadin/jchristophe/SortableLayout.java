@@ -6,6 +6,7 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.function.SerializableConsumer;
+import com.vaadin.flow.internal.StateNode;
 import com.vaadin.flow.shared.Registration;
 import elemental.json.JsonArray;
 
@@ -102,8 +103,14 @@ public class SortableLayout extends Div {
     }
 
     private void runBeforeClientResponse(SerializableConsumer<UI> command) {
-        layout.getElement().getNode().runWhenAttached(ui -> ui
-                .beforeClientResponse(layout, context -> command.accept(ui)));
+        final Runnable runnable = () -> getUI()
+                .ifPresent(ui -> ui.beforeClientResponse(layout, context -> command.accept(ui)));
+        final StateNode node = layout.getElement().getNode();
+        if (node.isAttached()) {
+            runnable.run();
+        } else {
+            node.addAttachListener(runnable::run);
+        }
     }
 
     public boolean isDisabledSort() {
