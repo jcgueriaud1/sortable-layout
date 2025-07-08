@@ -35,3 +35,4 @@ package-lock.json
 package.json
 webpack.config.js
 webpack.generated.js
+/sortable-layout-demo/frontend/generated/
