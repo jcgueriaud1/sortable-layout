@@ -45,32 +45,6 @@ window.Vaadin.Flow.sortableConnector = {
                 }
                 order.splice(newIndex, 0, sortableId);
                 sortable.sort(order, true);
-
-               // c.$server.onReorderListener([index], [newIndex]);
-
-/*                // bail out if we get input that we don't expect
-                if (["up", "down"].includes(direction) == false ) {
-                    return false
-                }
-                if (typeof(c.dataset.sortableId) == 'undefined') {
-                    return false
-                }
-                // `sortableId` is whatever you've set in your sortablejs config for `dataIdAttr`
-                let sortableId = c.dataset.sortableId
-                let order = c.$connector.sortable.toArray()
-               // let index = order.indexOf(sortableId)
-
-                // pull the item we're moving out of the order
-                order.splice(index, 1)
-
-                // put it back in at the correct position
-                if (direction == 'down') {
-                    order.splice(index+1, 0, sortableId)
-                } else if (direction == 'up') {
-                    order.splice(index-1, 0, sortableId)
-                }
-
-                c.$connector.sortable.sort(order, true)*/
             }
             ,
             refocus() {
@@ -94,10 +68,6 @@ window.Vaadin.Flow.sortableConnector = {
             }
             if (evt.to === evt.from) {
                 c.$server.onReorderListener(oldIndexes, newIndexes);
-                //evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-                //evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-
-                //c.$server.onReorderListenerElement(evt.oldDraggableIndex, evt.newDraggableIndex);
             } else {
                 const clone = (evt.pullMode === 'clone');
                 evt.from.parentElement.$server.onRemoveListener(oldIndexes, clone);
