@@ -1,27 +1,15 @@
 package org.vaadin.jchristophe;
 
-import com.github.appreciated.css.grid.GridLayoutComponent;
-import com.github.appreciated.css.grid.sizes.Flex;
-import com.github.appreciated.css.grid.sizes.Length;
-import com.github.appreciated.css.grid.sizes.MinMax;
-import com.github.appreciated.css.grid.sizes.Repeat;
-import com.github.appreciated.layout.FlexibleGridLayout;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.router.Route;
-import org.vaadin.jchristophe.example.ExampleCard;
 
-@CssImport("./demo.css")
 @Route(value = "grid", layout = MainLayout.class)
 public class GridSortableLayoutView extends Div {
 
-    private FlexibleGridLayout flexibleGridLayout = new FlexibleGridLayout();
     private SortableLayout sortableLayout;
 
     public GridSortableLayoutView() {
+        /*
         flexibleGridLayout
                 .withColumns(Repeat.RepeatMode.AUTO_FIT, new MinMax(new Length("190px"), new Flex(1)))
                 .withAutoRows(new Length("190px"))
@@ -80,6 +68,6 @@ public class GridSortableLayoutView extends Div {
             }
 
             Notification.show(ids.toString());
-        });
+        });*/
     }
 }

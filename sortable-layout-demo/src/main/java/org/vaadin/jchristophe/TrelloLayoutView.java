@@ -1,13 +1,13 @@
 package org.vaadin.jchristophe;
 
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.vaadin.jchristophe.trello.TrelloColumn;
 import org.vaadin.jchristophe.trello.TrelloTask;
 
-@CssImport("./trello-demo.css")
+@PageTitle("Trello")
 @Route(value = "trello", layout = MainLayout.class)
 public class TrelloLayoutView extends Div {
 

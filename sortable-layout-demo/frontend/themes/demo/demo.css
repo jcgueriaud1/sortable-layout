@@ -44,6 +44,6 @@
     background-color:var(--lumo-contrast-50pct);
 }
 
-.chosen-layout {
+.chosen-layout ul {
     border: 1px solid red;
 }

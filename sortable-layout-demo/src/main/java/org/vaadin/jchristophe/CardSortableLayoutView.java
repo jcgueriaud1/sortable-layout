@@ -1,33 +1,22 @@
 package org.vaadin.jchristophe;
 
-import com.github.appreciated.card.Card;
-import com.github.appreciated.card.content.IconItem;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@CssImport("./demo.css")
 @Route(value = "card", layout = MainLayout.class)
 public class CardSortableLayoutView extends Div {
 
     private HorizontalLayout mainLayout = new HorizontalLayout();
 
     public CardSortableLayoutView() {
-        SortableLayout sortableLayout = buildCardPanel();
+      /*  SortableLayout sortableLayout = buildCardPanel();
         SortableLayout cardPanelDragOnIcon = buildCardPanelDragOnIcon();
         mainLayout.addAndExpand(sortableLayout, cardPanelDragOnIcon);
         mainLayout.setSizeFull();
-        add(mainLayout);
+        add(mainLayout);*/
     }
-
+/*
     private SortableLayout buildCardPanel() {
 
         VerticalLayout verticalLayout;
@@ -94,5 +83,5 @@ public class CardSortableLayoutView extends Div {
             Notification.show(ids.toString());
         });
         return sortableLayout;
-    }
+    }*/
 }

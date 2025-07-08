@@ -2,16 +2,18 @@ package org.vaadin.jchristophe;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasText;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.ListItem;
+import com.vaadin.flow.component.html.Main;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@CssImport("./demo.css")
+
+@PageTitle("Demo with chosen event")
 @Route(value = "chosen-twolayouts", layout = MainLayout.class)
-public class ChosenEventLayoutsView extends HorizontalLayout {
+public class ChosenEventLayoutsView extends Main {
 
     private SortableLayout rightSortableLayout;
     private SortableLayout leftSortableLayout;
@@ -42,7 +44,11 @@ public class ChosenEventLayoutsView extends HorizontalLayout {
 
         rightSortableLayout.addChooseListener(this::choose);
         rightSortableLayout.addUnchooseListener(this::unchoose);
-        add(leftSortableLayout, rightSortableLayout);
+        add(new Paragraph("""
+                You can use `addChooseListener` and `addUnchooseListener` to run Java code when the user is starting to drag the item.
+                That can be use to indicate where you can drag the component.
+                """
+        ), leftSortableLayout, rightSortableLayout);
 
         leftSortableLayout.addSortableComponentReorderListener(e -> showNotification(e.getComponent(), leftSortableLayout));
         rightSortableLayout.addSortableComponentReorderListener(e -> showNotification(e.getComponent(), rightSortableLayout));

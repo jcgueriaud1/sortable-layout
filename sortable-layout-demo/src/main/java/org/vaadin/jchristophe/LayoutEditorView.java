@@ -1,6 +1,7 @@
 package org.vaadin.jchristophe;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.vaadin.jchristophe.layouteditor.LayoutEditor;
 import org.vaadin.jchristophe.layouteditor.LayoutEditorRow;
@@ -10,6 +11,8 @@ import java.util.Arrays;
 /**
  * @author Martin Israelsen
  */
+
+@PageTitle("Layout Editor demo")
 @Route(value = "layout-editor", layout = MainLayout.class)
 public class LayoutEditorView extends VerticalLayout {
 

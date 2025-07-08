@@ -22,6 +22,36 @@ window.Vaadin.Flow.sortableConnector = {
                     }
                 });
                 this.clonedElements = [];
+            },
+
+            moveElement : function(index, direction) {
+                c.$connector.focusedElement = document.activeElement;
+                if (["up", "down"].includes(direction) == false ) {
+                    return false
+                }
+                const sortable = c.$connector.sortable;
+
+                let order = sortable.toArray();
+                const sortableId = order[index];
+                // pull the item we're moving out of the order
+                order.splice(index, 1)
+
+                let newIndex;
+                // put it back in at the correct position
+                if (direction == 'down') {
+                    newIndex = index+1;
+                } else if (direction == 'up') {
+                    newIndex = index-1;
+                }
+                order.splice(newIndex, 0, sortableId);
+                sortable.sort(order, true);
+            }
+            ,
+            refocus() {
+                if (c.$connector.focusedElement !== undefined) {
+                    c.$connector.focusedElement.focus();
+                }
+                c.$connector.focusedElement = undefined;
             }
         };
 
