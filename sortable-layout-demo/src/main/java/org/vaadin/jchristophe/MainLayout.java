@@ -3,6 +3,7 @@ package org.vaadin.jchristophe;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.AfterNavigationEvent;
@@ -30,8 +31,8 @@ public class MainLayout extends AppLayout {
         final SideNavItem accessibleView = new SideNavItem("Accessible Drag and drop", AccessibleSortableView.class);
         final SideNav menuLayout = new SideNav();
         menuLayout.addItem(twoLayout, multiDragLayout, simple, trello, layoutEditor, chosenEventsLayout, accessibleView);
-        addToDrawer(menuLayout);
-        addToNavbar(true,drawerToggle, viewTitle);
+        addToDrawer(new SortableLayout(menuLayout));
+        addToNavbar(true,drawerToggle, new Header(viewTitle));
     }
 
     @Override

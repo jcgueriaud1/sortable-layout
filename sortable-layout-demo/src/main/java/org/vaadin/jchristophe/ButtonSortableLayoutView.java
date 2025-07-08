@@ -31,7 +31,7 @@ public class ButtonSortableLayoutView extends Main {
         sortableLayout.setAnimation(150);
         add(sortableLayout);
 
-        sortableLayout.setOnOrderChanged(component -> {
+        sortableLayout.addSortableComponentReorderListener(event -> {
             StringBuilder ids = new StringBuilder("components ");
             for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {
@@ -61,7 +61,7 @@ public class ButtonSortableLayoutView extends Main {
         SortableLayout sortableLayout2 = new SortableLayout(horizontalLayout);
         add(sortableLayout2);
 
-        sortableLayout2.setOnOrderChanged(component -> {
+        sortableLayout2.addSortableComponentReorderListener(event -> {
             StringBuilder ids = new StringBuilder("components HL ");
             for (Component sortableLayoutComponent : sortableLayout2.getComponents()) {
                 if (sortableLayoutComponent.getId().isPresent()) {

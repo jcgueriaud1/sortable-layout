@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Main;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -14,8 +15,13 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 @Route(value = "", layout = MainLayout.class)
 public class SortableLayoutView extends Main {
 
+    private final Span info;
+
     public SortableLayoutView() {
         addClassName(LumoUtility.Padding.MEDIUM);
+        info = new Span("Event:");
+        info.setId("info");
+        add(info);
         createBasicExample();
         createAnimationExample();
         createGroupExample();
@@ -29,6 +35,11 @@ public class SortableLayoutView extends Main {
         UnorderedList list = new UnorderedList();
         list.add(new ListItem("item 1"),new ListItem("item 2"),new ListItem("item 3"));
         SortableLayout sortableLayout = new SortableLayout(list);
+        sortableLayout.setId("basic-example");
+
+        sortableLayout.addSortableComponentReorderListener(event -> {
+            info.setText("Event: " + event.getIndex());
+        });
 
         addExample("Basic Example", sortableLayout);
     }

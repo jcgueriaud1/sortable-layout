@@ -1,16 +1,20 @@
 package org.vaadin.jchristophe;
 
-import javax.swing.event.ChangeEvent;
-
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.sidenav.SideNav;
+import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.function.SerializableConsumer;
+import com.vaadin.flow.function.SerializableRunnable;
+import com.vaadin.flow.function.SerializableSupplier;
 import com.vaadin.flow.shared.Registration;
 import elemental.json.JsonArray;
 
+import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -26,14 +30,14 @@ import static java.lang.Integer.min;
  *
  */
 @Tag("sortable")
-@NpmPackage(value = "sortablejs", version = "1.14.0")
+@NpmPackage(value = "sortablejs", version = "1.15.6")
 @JavaScript("./sortableConnector.js")
 public class SortableLayout extends Div {
 
-    private final Logger logger = Logger.getLogger("SortableLayout");
+    private final transient Logger logger = Logger.getLogger("SortableLayout");
 
     @FunctionalInterface
-    public interface CloneFunction {
+    public interface CloneFunction extends Serializable {
 
         /**
          * Clone the component
@@ -51,9 +55,9 @@ public class SortableLayout extends Div {
 
     private boolean disabledSort = false;
 
-    private Supplier<List<Component>> supplyComponentFunction;
-    private Consumer<Component> storeComponentFunction;
-    private Runnable clearComponentFunction;
+    private SerializableSupplier<List<Component>> supplyComponentFunction;
+    private SerializableConsumer<Component> storeComponentFunction;
+    private SerializableRunnable clearComponentFunction;
 
     /**
      * Make the layout reorderable
@@ -75,11 +79,10 @@ public class SortableLayout extends Div {
     public SortableLayout(Component layout, SortableConfig config,
                           SortableGroupStore groupStore, CloneFunction cloneFunction) {
         this.layout = layout;
-        if (!(getLayout() instanceof HasComponents)) {
-            throw new IllegalArgumentException("Layout must implements HasComponents");
+        if (!(getLayout() instanceof HasComponents || getLayout() instanceof SideNav)) {
+            throw new IllegalArgumentException("Layout must implements HasComponents or SideNav");
         }
         add(layout);
-        initConnector(layout.getElement(), config);
         if (groupStore != null) {
             setGroup(groupStore);
         } else {
@@ -94,7 +97,7 @@ public class SortableLayout extends Div {
                 throw new IllegalArgumentException("Clone function is required if you want to clone component");
             }
         }
-
+        addAttachListener(event -> initConnector(layout.getElement(), config));
     }
 
     private void initConnector(Element layout, SortableConfig config) {
@@ -164,32 +167,58 @@ public class SortableLayout extends Div {
     @ClientCallable
     private void onReorderListener(JsonArray oldIndexes, JsonArray newIndexes) {
         List<Component> components = new ArrayList<>();
-        int smallestNewIndex = Integer.MAX_VALUE;
+        int index = -1;
         for (int i = 0; i < oldIndexes.length(); i++) {
             int oldIndex = (int) oldIndexes.get(i).asNumber();
             int newIndex = (int) newIndexes.get(i).asNumber();
-            smallestNewIndex = min(newIndex, smallestNewIndex);
-            logger.finest("Reorder listener called drag index=" + oldIndex
-                    + " drop index= " + newIndex);
+            logger.finest(MessageFormat.format("Reorder listener called drag index={0} drop index= {1}", oldIndex, newIndex));
             Component component = getComponents().get(oldIndex);
             components.add(component);
-            ((HasComponents) getLayout()).remove(component);
-            ((HasComponents) getLayout()).addComponentAtIndex(newIndex, component);
+            removeLayoutComponent(component);
+            addLayoutComponentAtIndex(newIndex, component);
             if (onOrderChanged != null) {
                 onOrderChanged.accept(component);
             }
+            if (i == 0) {
+                index = newIndex;
+            }
         }
-        fireEvent(new SortableComponentReorderEvent(this,true, components));
+        fireEvent(new SortableComponentReorderEvent(this,true, components, index));
         runBeforeClientResponse(ui -> getElement()
                 .callJsFunction("$connector.refocus"));
     }
-/*
 
-    @ClientCallable
-    private void onReorderListenerElement(Element oldComponent, Element newComponent) {
-        System.out.println("test JCG");
+    private void removeLayoutComponent(Component component) {
+        Component currentLayout = getLayout();
+        if (currentLayout instanceof HasComponents hasComponents) {
+            hasComponents.remove(component);
+        } else if (currentLayout instanceof SideNav sideNav && component instanceof SideNavItem sideNavItem) {
+            sideNav.remove(sideNavItem);
+        } else {
+            throw new IllegalArgumentException("Layout must implements HasComponents or SideNav");
+        }
     }
-*/
+
+    private void addLayoutComponentAtIndex(int newIndex, Component component) {
+        Component currentLayout = getLayout();
+        if (currentLayout instanceof HasComponents hasComponents) {
+            hasComponents.addComponentAtIndex(newIndex, component);
+        } else if (currentLayout instanceof SideNav sideNav && component instanceof SideNavItem sideNavItem) {
+            sideNav.addItemAtIndex(newIndex, sideNavItem);
+        } else {
+            throw new IllegalArgumentException("Layout must implements HasComponents or SideNav");
+        }
+    }
+    private void addLayoutComponent(Component component) {
+        Component currentLayout = getLayout();
+        if (currentLayout instanceof HasComponents hasComponents) {
+            hasComponents.add(component);
+        } else if (currentLayout instanceof SideNav sideNav && component instanceof SideNavItem sideNavItem) {
+            sideNav.addItem(sideNavItem);
+        } else {
+            throw new IllegalArgumentException("Layout must implements HasComponents or SideNav");
+        }
+    }
 
     @ClientCallable
     protected void onAddListener(JsonArray newIndexes, boolean clone) {
@@ -199,7 +228,7 @@ public class SortableLayout extends Div {
             int newIndex = (int) newIndexes.get(i).asNumber();
             if (newIndex < 0) {
                 // there is an issue in sortable layout when the index can be negative
-                logger.finest("Add listener called drop index=" + newIndex);
+                logger.finest(MessageFormat.format("Add listener called drop index={0}", newIndex));
             } else {
                 smallestNewIndex = min(newIndex, smallestNewIndex);
             }
@@ -208,8 +237,7 @@ public class SortableLayout extends Div {
         Element[] elements = addedComponents.stream().map(Component::getElement).toArray(Element[]::new);
         getLayout().getElement().insertChild(smallestNewIndex, elements);
 
-        for (int i = 0; i < addedComponents.size(); i++) {
-            Component addedComponent = addedComponents.get(i);
+        for (Component addedComponent : addedComponents) {
             if (onOrderChanged != null) {
                 onOrderChanged.accept(addedComponent);
             }
@@ -223,16 +251,15 @@ public class SortableLayout extends Div {
         List<Component> removedComponents = new ArrayList<>();
         for (int i = 0; i < oldIndexes.length(); i++) {
             int oldIndex = (int) oldIndexes.get(i).asNumber();
-            logger.finest("remove listener called drag index=" + oldIndex);
+            logger.finest(MessageFormat.format("remove listener called drag index={0}", oldIndex));
             Component removedComponent = getComponents().get(oldIndex);
             removedComponents.add(removedComponent);
         }
-        for (int i = 0; i < removedComponents.size(); i++) {
-            Component removedComponent = removedComponents.get(i);
+        for (Component removedComponent : removedComponents) {
             storeComponentFunction.accept(removedComponent);
             if (clone) { // remove the component if clone and replace it by a clone
                 Component clonedComponent = cloneFunction.clone(removedComponent);
-                replace((HasComponents) getLayout(), removedComponent, clonedComponent);
+                replaceComponentInLayout(removedComponent, clonedComponent);
                 runBeforeClientResponse(ui -> getElement()
                         .callJsFunction("$connector.clearClone"));
             }
@@ -245,25 +272,15 @@ public class SortableLayout extends Div {
     }
 
     /**
-     * @deprecated  use the listener addSortableComponentReorderListener instead
-     *
-     * @param onOrderChanged function called when a component is reordered or moved
-     */
-    @Deprecated
-    public void setOnOrderChanged(SerializableConsumer<Component> onOrderChanged) {
-        this.onOrderChanged = onOrderChanged;
-    }
-
-    /**
      *
      * @return the list of components in the right order
      */
     public List<Component> getComponents() {
-        return getLayout().getChildren().collect(Collectors.toList());
+        return getLayout().getChildren().toList();
     }
 
     public void moveUp(Component component) {
-        Element element = layout.getElement();
+        Element element = getLayout().getElement();
         int index = element.indexOfChild(component.getElement());
         if (index > 0) {
             runBeforeClientResponse(ui -> getElement()
@@ -272,7 +289,7 @@ public class SortableLayout extends Div {
     }
 
     public void moveDown(Component component) {
-        Element element = layout.getElement();
+        Element element = getLayout().getElement();
         int index = element.indexOfChild(component.getElement());
         runBeforeClientResponse(ui -> getElement()
                 .callJsFunction("$connector.moveElement", index, "down"));
@@ -280,7 +297,7 @@ public class SortableLayout extends Div {
 
     private Component getLayout() {
         if (layout instanceof Composite) {
-            return (((Composite) layout).getContent());
+            return (((Composite<?>) layout).getContent());
         } else {
             return layout;
         }
@@ -323,7 +340,6 @@ public class SortableLayout extends Div {
     public static class SortableComponentAddEvent extends ComponentEvent<SortableLayout> {
 
         private final List<Component> components;
-
         public SortableComponentAddEvent(SortableLayout source, boolean fromClient, List<Component> components) {
             super(source, fromClient);
             this.components = components;
@@ -340,6 +356,7 @@ public class SortableLayout extends Div {
         public List<Component> getComponents() {
             return components;
         }
+
     }
 
     public static class SortableComponentDeleteEvent extends ComponentEvent<SortableLayout> {
@@ -366,10 +383,13 @@ public class SortableLayout extends Div {
     public static class SortableComponentReorderEvent extends ComponentEvent<SortableLayout> {
 
         private final List<Component> components;
+        private final int index;
 
-        public SortableComponentReorderEvent(SortableLayout source, boolean fromClient, List<Component> components) {
+
+        public SortableComponentReorderEvent(SortableLayout source, boolean fromClient, List<Component> components, int index) {
             super(source, fromClient);
             this.components = components;
+            this.index = index;
         }
 
         /**
@@ -383,19 +403,28 @@ public class SortableLayout extends Div {
         public List<Component> getComponents() {
             return components;
         }
+
+        /**
+         *
+         * @return Index of the first component
+         */
+        public int getIndex() {
+            return index;
+        }
     }
 
-    private static void replace(HasComponents layout, Component oldComponent, Component newComponent) {
+    private void replaceComponentInLayout(Component oldComponent, Component newComponent) {
+
         if (oldComponent == null && newComponent == null) {
             // NO-OP
             return;
         }
         if (oldComponent == null) {
-            layout.add(newComponent);
+            addLayoutComponent(newComponent);
         } else if (newComponent == null) {
-            layout.remove(oldComponent);
+            removeLayoutComponent(oldComponent);
         } else {
-            Element element = layout.getElement();
+            Element element = getLayout().getElement();
             int oldIndex = element.indexOfChild(oldComponent.getElement());
             int newIndex = element.indexOfChild(newComponent.getElement());
             if (oldIndex >= 0 && newIndex >= 0) {
@@ -404,7 +433,7 @@ public class SortableLayout extends Div {
             } else if (oldIndex >= 0) {
                 element.setChild(oldIndex, newComponent.getElement());
             } else {
-                layout.add(newComponent);
+                addLayoutComponent(newComponent);
             }
         }
     }
