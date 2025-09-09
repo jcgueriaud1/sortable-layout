@@ -35,6 +35,6 @@ public class AccessibilityTestsIT extends BasePlayWrightIT {
                 .exclude("vaadin-connection-indicator").analyze(); // 4
 
         List<Rule> violations = accessibilityScanResults.getViolations();
-        assertEquals(3, violations.size()); // 5
+        assertEquals(1, violations.size()); // 5
     }
 }

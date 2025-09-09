@@ -56,6 +56,26 @@ mvn spring-boot:run
 
 This deploys demo at http://localhost:8080
 
+## Running tests
+
+To run the unit tests, execute the following command:
+
+```
+mvn clean install
+```
+
+## Integration tests
+
+The integration tests are built using Spring Boot, Playwright, and Axe-core.
+The tests are located in files ending with `IT.java` in the `sortable-layout-demo` module.
+The tests are run with the `maven-failsafe-plugin` when the `it` profile is activated.
+
+To run the integration tests, execute the following command:
+
+```
+mvn verify -Pit
+```
+
 ## Examples
 Sort a list of buttons: (Does not work in Firefox)
 
