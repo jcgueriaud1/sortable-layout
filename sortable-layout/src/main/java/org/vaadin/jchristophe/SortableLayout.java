@@ -165,7 +165,7 @@ public class SortableLayout extends Div {
     }
 
     @ClientCallable
-    private void onReorderListener(JsonArray oldIndexes, JsonArray newIndexes) {
+    protected void onReorderListener(JsonArray oldIndexes, JsonArray newIndexes) {
         List<Component> components = new ArrayList<>();
         int index = -1;
         for (int i = 0; i < oldIndexes.length(); i++) {
@@ -247,7 +247,7 @@ public class SortableLayout extends Div {
     }
 
     @ClientCallable
-    private void onRemoveListener(JsonArray oldIndexes, boolean clone) {
+    protected void onRemoveListener(JsonArray oldIndexes, boolean clone) {
         List<Component> removedComponents = new ArrayList<>();
         for (int i = 0; i < oldIndexes.length(); i++) {
             int oldIndex = (int) oldIndexes.get(i).asNumber();

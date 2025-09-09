@@ -13,7 +13,7 @@
     <description>Drag and drop ordered layout. Vaadin wrapper for sortable js</description>
     
     <properties>
-        <vaadin.version>24.8.2</vaadin.version>
+        <vaadin.version>24.8.7</vaadin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>17</maven.compiler.source>

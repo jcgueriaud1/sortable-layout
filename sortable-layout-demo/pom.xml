@@ -16,7 +16,7 @@
     </organization>
 
     <properties>
-        <vaadin.version>24.8.2</vaadin.version>
+        <vaadin.version>24.8.7</vaadin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -34,7 +34,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.5</version>
         <relativePath/>
     </parent>
     <dependencyManagement>
@@ -107,7 +107,7 @@
         <dependency>
             <groupId>com.microsoft.playwright</groupId>
             <artifactId>playwright</artifactId>
-            <version>1.50.0</version>
+            <version>1.55.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -118,7 +118,7 @@
         <dependency>
             <groupId>com.deque.html.axe-core</groupId>
             <artifactId>playwright</artifactId>
-            <version>4.10.1</version>
+            <version>4.10.2</version>
         </dependency>
 
     </dependencies>

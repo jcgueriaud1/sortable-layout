@@ -51,7 +51,7 @@ Missing features:
 
 Starting the test/demo server:
 ```
-mvn jetty:run
+mvn spring-boot:run
 ```
 
 This deploys demo at http://localhost:8080
