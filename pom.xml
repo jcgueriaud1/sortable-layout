@@ -8,6 +8,7 @@
     <modules>
         <module>sortable-layout</module>
         <module>sortable-layout-demo</module>
+        <module>integration-test-reporting</module>
     </modules>
     <name>Sortable Layout</name>
     <description>Drag and drop ordered layout. Vaadin wrapper for sortable js</description>
