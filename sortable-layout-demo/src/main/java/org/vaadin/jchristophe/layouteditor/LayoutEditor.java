@@ -39,7 +39,7 @@ public class LayoutEditor<FIELD> extends Composite<VerticalLayout> {
 	private VerticalLayout rows = new VerticalLayout();
 
 	public LayoutEditor() {
-
+        addClassName("layout-editor");
 		VerticalLayout content = getContent();
 
 		rows.setMargin(false);

@@ -12,9 +12,10 @@ import com.vaadin.flow.router.Route;
 
 
 @PageTitle("Demo with chosen event")
-@Route(value = "chosen-twolayouts", layout = MainLayout.class)
+@Route(value = ChosenEventLayoutsView.CHOSEN_TWOLAYOUTS_VIEW, layout = MainLayout.class)
 public class ChosenEventLayoutsView extends Main {
 
+    public static final String CHOSEN_TWOLAYOUTS_VIEW = "chosen-twolayouts";
     private SortableLayout rightSortableLayout;
     private SortableLayout leftSortableLayout;
 

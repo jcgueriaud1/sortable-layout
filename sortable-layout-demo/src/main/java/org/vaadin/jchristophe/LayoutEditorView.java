@@ -13,10 +13,12 @@ import java.util.Arrays;
  */
 
 @PageTitle("Layout Editor demo")
-@Route(value = "layout-editor", layout = MainLayout.class)
+@Route(value = LayoutEditorView.LAYOUT_EDITOR_VIEW, layout = MainLayout.class)
 public class LayoutEditorView extends VerticalLayout {
 
-	private LayoutEditor<String> editor = new LayoutEditor<>();
+    public static final String LAYOUT_EDITOR_VIEW = "layout-editor";
+
+    private LayoutEditor<String> editor = new LayoutEditor<>();
 
 	public LayoutEditorView() {
 

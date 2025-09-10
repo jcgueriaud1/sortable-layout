@@ -49,7 +49,6 @@ public class SortableLayout extends Div {
     }
 
     private CloneFunction cloneFunction;
-    private SerializableConsumer<Component> onOrderChanged;
 
     private final Component layout;
 
@@ -165,7 +164,7 @@ public class SortableLayout extends Div {
     }
 
     @ClientCallable
-    private void onReorderListener(JsonArray oldIndexes, JsonArray newIndexes) {
+    protected void onReorderListener(JsonArray oldIndexes, JsonArray newIndexes) {
         List<Component> components = new ArrayList<>();
         int index = -1;
         for (int i = 0; i < oldIndexes.length(); i++) {
@@ -174,14 +173,18 @@ public class SortableLayout extends Div {
             logger.finest(MessageFormat.format("Reorder listener called drag index={0} drop index= {1}", oldIndex, newIndex));
             Component component = getComponents().get(oldIndex);
             components.add(component);
+        }
+        for (Component component : components) {
             removeLayoutComponent(component);
+        }
+        for (int i = 0; i < newIndexes.length(); i++) {
+            int newIndex = (int) newIndexes.get(i).asNumber();
+            Component component = components.get(i);
             addLayoutComponentAtIndex(newIndex, component);
-            if (onOrderChanged != null) {
-                onOrderChanged.accept(component);
-            }
             if (i == 0) {
                 index = newIndex;
             }
+
         }
         fireEvent(new SortableComponentReorderEvent(this,true, components, index));
         runBeforeClientResponse(ui -> getElement()
@@ -237,17 +240,12 @@ public class SortableLayout extends Div {
         Element[] elements = addedComponents.stream().map(Component::getElement).toArray(Element[]::new);
         getLayout().getElement().insertChild(smallestNewIndex, elements);
 
-        for (Component addedComponent : addedComponents) {
-            if (onOrderChanged != null) {
-                onOrderChanged.accept(addedComponent);
-            }
-        }
         clearComponentFunction.run();
         fireEvent(new SortableComponentAddEvent(this, true, addedComponents));
     }
 
     @ClientCallable
-    private void onRemoveListener(JsonArray oldIndexes, boolean clone) {
+    protected void onRemoveListener(JsonArray oldIndexes, boolean clone) {
         List<Component> removedComponents = new ArrayList<>();
         for (int i = 0; i < oldIndexes.length(); i++) {
             int oldIndex = (int) oldIndexes.get(i).asNumber();
@@ -262,9 +260,6 @@ public class SortableLayout extends Div {
                 replaceComponentInLayout(removedComponent, clonedComponent);
                 runBeforeClientResponse(ui -> getElement()
                         .callJsFunction("$connector.clearClone"));
-            }
-            if (onOrderChanged != null) {
-                onOrderChanged.accept(removedComponent);
             }
         }
 
