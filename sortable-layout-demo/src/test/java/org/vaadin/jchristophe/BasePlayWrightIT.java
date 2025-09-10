@@ -70,7 +70,7 @@ public class BasePlayWrightIT implements HasTestView {
     public static void setup() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(new LaunchOptions()
-                .setHeadless(false));
+                .setHeadless(true));
     }
 
     protected Page getPage() {
