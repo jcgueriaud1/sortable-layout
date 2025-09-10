@@ -35,6 +35,8 @@ public class ChosenEventLayoutsViewIT extends BasePlayWrightIT {
         // Move to the center of the source, press and hold
         page.mouse().move(from.x + from.width / 2, from.y + from.height / 2);
         page.mouse().down();
+        assertThat(leftListItem).hasAttribute("draggable", "true");
+        assertThat(leftListItem).hasClass("sortable-chosen");
 
         page.mouse().move(to.x + to.width / 2, to.y + to.height / 2);
 
@@ -48,6 +50,7 @@ public class ChosenEventLayoutsViewIT extends BasePlayWrightIT {
         assertThat(page.locator(".chosen-layout")).hasCount(0);
         assertThat(leftList).hasText("left item 1left item 2left item 3");
         assertThat(rightList).hasText("left item 1right item 1right item 2right item 3");
+        assertThat(leftListItem).not().hasClass("sortable-chosen");
     }
 
     @Override

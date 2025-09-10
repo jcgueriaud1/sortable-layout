@@ -47,3 +47,7 @@
 .chosen-layout ul {
     border: 1px solid red;
 }
+
+.row-handle, .field-handle {
+    cursor: move;
+}
