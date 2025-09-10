@@ -280,4 +280,5 @@ public class SortableConfig implements JsonSerializable {
     boolean requireCloneFunction() {
         return group.isClone();
     }
+
 }
