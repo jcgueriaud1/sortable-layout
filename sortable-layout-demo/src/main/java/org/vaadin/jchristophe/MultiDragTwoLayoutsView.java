@@ -5,22 +5,30 @@ import java.util.List;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasText;
 import com.vaadin.flow.component.html.ListItem;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 
 @PageTitle("Drag multiple items")
-@Route(value = "multidrag", layout = MainLayout.class)
-public class MultiDragTwoLayoutsView extends HorizontalLayout {
+@Route(value = MultiDragTwoLayoutsView.MULTIDRAG_VIEW, layout = MainLayout.class)
+public class MultiDragTwoLayoutsView extends VerticalLayout {
+
+    public static final String MULTIDRAG_VIEW = "multidrag";
 
     private SortableLayout rightSortableLayout;
     private SortableLayout leftSortableLayout;
+    private Span info;
 
     public MultiDragTwoLayoutsView() {
 
+        info = new Span("Event:");
+        info.setId("info");
         SortableConfig multisortableConfig = new SortableConfig();
         multisortableConfig.setGroupName("shared");
         multisortableConfig.allowDragIn(true);
@@ -33,21 +41,25 @@ public class MultiDragTwoLayoutsView extends HorizontalLayout {
 
         SortableGroupStore group = new SortableGroupStore();
         UnorderedList leftList = new UnorderedList();
+        leftList.setId("left-list");
         leftList.add(new ListItem("left item 1"),new ListItem("left item 2"),
                 new ListItem("left item 3"));
         leftSortableLayout = new SortableLayout(leftList, multisortableConfig,
                 group, MultiDragTwoLayoutsView::cloneComponent);
         UnorderedList rightList = new UnorderedList();
+        rightList.setId("right-list");
         rightList.add(new ListItem("right item 1"),
                 new ListItem("right item 2"),
                 new ListItem("right item 3"));
         rightSortableLayout = new SortableLayout(rightList, multisortableConfig,
                 group, MultiDragTwoLayoutsView::cloneComponent);
 
-        add(leftSortableLayout, rightSortableLayout);
+        add(new HorizontalLayout(leftSortableLayout, rightSortableLayout), info);
 
         leftSortableLayout.addSortableComponentReorderListener(e -> showNotification(e.getComponents(), leftSortableLayout));
+        leftSortableLayout.addSortableComponentReorderListener(e -> showInfo(leftSortableLayout));
         rightSortableLayout.addSortableComponentReorderListener(e -> showNotification(e.getComponents(), rightSortableLayout));
+        rightSortableLayout.addSortableComponentReorderListener(e -> showInfo(rightSortableLayout));
         rightSortableLayout.addSortableComponentAddListener(e -> showNotification(e.getComponents(), rightSortableLayout));
         leftSortableLayout.addSortableComponentAddListener(e -> showNotification(e.getComponents(), leftSortableLayout));
     }
@@ -73,5 +85,16 @@ public class MultiDragTwoLayoutsView extends HorizontalLayout {
             }
         }
         Notification.show(items.toString());
+    }
+
+    private void showInfo(SortableLayout sortableLayout) {
+        StringBuilder items = new StringBuilder("");
+        for (Component sortableLayoutComponent : sortableLayout.getComponents()) {
+            if (sortableLayoutComponent instanceof HasText) {
+                items.append(" ").append(((HasText) sortableLayoutComponent).getText());
+            }
+        }
+        Notification.show(items.toString());
+        info.setText(items.toString());
     }
 }

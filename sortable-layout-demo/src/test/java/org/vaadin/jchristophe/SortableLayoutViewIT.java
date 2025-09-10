@@ -22,7 +22,7 @@ public class SortableLayoutViewIT extends BasePlayWrightIT {
     @Test
     public void testDragAndDrop() {
         assertThat(page.getByText("Simple demos")).isVisible();
-        assertThat(page.locator("#basic-example").getByText("item 1item 2item 3")).isVisible();
+        assertThat(page.locator("#basic-example")).hasText("item 1item 2item 3");
         // Locate the first and last items in the list
         Locator locator = page.locator("#basic-example ul li");
         Locator firstItem = locator.first();
@@ -32,7 +32,7 @@ public class SortableLayoutViewIT extends BasePlayWrightIT {
 
         // Drag the first item to the last item's position
         firstItem.dragTo(lastItem);
-        assertThat(page.locator("#basic-example").getByText("item 2item 3item 1")).isVisible();
+        assertThat(page.locator("#basic-example")).hasText("item 2item 3item 1");
     }
 
     @Test
@@ -45,7 +45,7 @@ public class SortableLayoutViewIT extends BasePlayWrightIT {
 
         // Drag the first item to the last item's position
         firstItem.dragTo(lastItem);
-        assertThat(page.locator("#basic-example").getByText("item 2item 3item 1")).isVisible();
+        assertThat(page.locator("#basic-example")).hasText("item 2item 3item 1");
         assertThat(page.locator("#info")).hasText("Event: 2");
     }
     @Test
@@ -59,7 +59,7 @@ public class SortableLayoutViewIT extends BasePlayWrightIT {
 
         // Drag the item
         firstItem.dragTo(lastItem);
-        assertThat(page.locator("#basic-example").getByText("item 2item 1item 3")).isVisible();
+        assertThat(page.locator("#basic-example")).hasText("item 2item 1item 3");
         assertThat(page.locator("#info")).hasText("Event: 1");
     }
 }
