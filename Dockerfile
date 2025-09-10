@@ -15,7 +15,7 @@ RUN ./mvnw clean test package -Pproduction
 
 # The "Run" stage. Start with a clean image, and copy over just the app itself, omitting gradle, npm and any intermediate build files.
 FROM eclipse-temurin:17
-COPY --from=BUILD /app/sortable-layout-demo/target/sortable-layout-demo-2.0.2.jar /app/sortable-layout-demo.jar
+COPY --from=BUILD /app/sortable-layout-demo/target/sortable-layout-demo-*.jar /app/sortable-layout-demo.jar
 WORKDIR /app/
 EXPOSE 8080
 ENTRYPOINT java -jar sortable-layout-demo.jar 8080
