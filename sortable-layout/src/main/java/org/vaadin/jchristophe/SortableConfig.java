@@ -27,7 +27,6 @@ public class SortableConfig implements JsonSerializable {
     private boolean multiDrag = false;
 
     private String selectedClass;
-    private boolean test;
 
     public boolean isSort() {
         return sort;
@@ -282,11 +281,4 @@ public class SortableConfig implements JsonSerializable {
         return group.isClone();
     }
 
-    public boolean isTest() {
-        return test;
-    }
-
-    public void setTest(boolean test) {
-        this.test = test;
-    }
 }
