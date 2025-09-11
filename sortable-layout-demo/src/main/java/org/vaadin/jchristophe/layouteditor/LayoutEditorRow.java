@@ -34,6 +34,7 @@ public class LayoutEditorRow<FIELD> extends Composite<HorizontalLayout> {
 	public LayoutEditorRow(SortableConfig sortableConfig, SortableGroupStore sortableGroupStore) {
 		HorizontalLayout layout = getContent();
 		layout.setAlignItems(Alignment.CENTER);
+        addClassName("layout-editor-row");
 
 		Style s = layout.getStyle();
 		s.set("background-color", "#eeeeee");
