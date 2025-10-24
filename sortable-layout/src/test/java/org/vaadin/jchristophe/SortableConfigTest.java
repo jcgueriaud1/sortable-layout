@@ -4,6 +4,8 @@ import elemental.json.JsonObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,11 +21,11 @@ class SortableConfigTest {
     @Test
     void testDefaultValues() {
         assertThat(sortableConfig.isSort()).isTrue();
-        assertThat(sortableConfig.getDelay()).isEqualTo(0);
+        assertThat(sortableConfig.getDelay()).isZero();
         assertThat(sortableConfig.isDelayOnTouchOnly()).isFalse();
-        assertThat(sortableConfig.getTouchStartThreshold()).isEqualTo(0);
+        assertThat(sortableConfig.getTouchStartThreshold()).isZero();
         assertThat(sortableConfig.isDisabled()).isFalse();
-        assertThat(sortableConfig.getAnimation()).isEqualTo(0);
+        assertThat(sortableConfig.getAnimation()).isZero();
         assertThat(sortableConfig.getGhostClass()).isNull();
         assertThat(sortableConfig.getChosenClass()).isNull();
         assertThat(sortableConfig.getDragClass()).isNull();
@@ -72,12 +74,12 @@ class SortableConfigTest {
         sortableConfig.addFilter("filter1");
         sortableConfig.addFilter("filter2");
 
-        JsonObject json = sortableConfig.toJson();
-        assertThat(json.getString("filter")).isEqualTo(".filter1 .filter2");
+        ObjectNode json = sortableConfig.toJson();
+        assertThat(json.get("filter").asString()).isEqualTo(".filter1 .filter2");
 
         sortableConfig.clearFilter();
         json = sortableConfig.toJson();
-        assertThat(json.hasKey("filter")).isFalse();
+        assertThat(json.get("filter")).isNull();
     }
 
     @Test
@@ -94,19 +96,19 @@ class SortableConfigTest {
         sortableConfig.setSelectedClass("selected-class");
         sortableConfig.addFilter("filter-class");
 
-        JsonObject json = sortableConfig.toJson();
+        ObjectNode json = sortableConfig.toJson();
 
-        assertThat(json.getNumber("animation")).isEqualTo(150);
-        assertThat(json.getBoolean("sort")).isTrue();
-        assertThat(json.getNumber("delay")).isEqualTo(50);
-        assertThat(json.getBoolean("delayOnTouchOnly")).isTrue();
-        assertThat(json.getNumber("touchStartThreshold")).isEqualTo(10);
-        assertThat(json.getBoolean("multiDrag")).isTrue();
-        assertThat(json.getString("ghostClass")).isEqualTo("ghost-class");
-        assertThat(json.getString("chosenClass")).isEqualTo("chosen-class");
-        assertThat(json.getString("dragClass")).isEqualTo("drag-class");
-        assertThat(json.getString("selectedClass")).isEqualTo("selected-class");
-        assertThat(json.getString("filter")).isEqualTo(".filter-class");
+        assertThat(json.get("animation").asInt()).isEqualTo(150);
+        assertThat(json.get("sort").asBoolean()).isTrue();
+        assertThat(json.get("delay").asInt()).isEqualTo(50);
+        assertThat(json.get("delayOnTouchOnly").asBoolean()).isTrue();
+        assertThat(json.get("touchStartThreshold").asInt()).isEqualTo(10);
+        assertThat(json.get("multiDrag").asBoolean()).isTrue();
+        assertThat(json.get("ghostClass").asString()).isEqualTo("ghost-class");
+        assertThat(json.get("chosenClass").asString()).isEqualTo("chosen-class");
+        assertThat(json.get("dragClass").asString()).isEqualTo("drag-class");
+        assertThat(json.get("selectedClass").asString()).isEqualTo("selected-class");
+        assertThat(json.get("filter").asString()).isEqualTo(".filter-class");
     }
 
     @Test
@@ -126,36 +128,36 @@ class SortableConfigTest {
     @Test
     void testDragOut() {
         sortableConfig.allowDragOut(false);
-        JsonObject json = sortableConfig.toJson();
-        JsonObject group = json.getObject("group");
-        assertThat(group.getBoolean("pull")).isFalse();
+        ObjectNode json = sortableConfig.toJson();
+        ObjectNode group = json.withObject("group");
+        assertThat(group.get("pull").asBoolean()).isFalse();
     }
 
     @Test
     void testDragOutGroupName() {
         sortableConfig.addDragOutGroupName("group1");
-        JsonObject json = sortableConfig.toJson();
-        JsonObject group = json.getObject("group");
-        elemental.json.JsonArray pull = group.getArray("pull");
-        assertThat(pull.length()).isEqualTo(1);
-        assertThat(pull.getString(0)).isEqualTo("group1");
+        ObjectNode json = sortableConfig.toJson();
+        ObjectNode group = json.withObject("group");
+        ArrayNode pull = group.withArray("pull");
+        assertThat(pull.size()).isEqualTo(1);
+        assertThat(pull.get(0).asString()).isEqualTo("group1");
     }
 
     @Test
     void testDragIn() {
         sortableConfig.allowDragIn(true);
-        JsonObject json = sortableConfig.toJson();
-        JsonObject group = json.getObject("group");
-        assertThat(group.getBoolean("put")).isTrue();
+        ObjectNode json = sortableConfig.toJson();
+        ObjectNode group = json.withObject("group");
+        assertThat(group.get("put").asBoolean()).isTrue();
     }
 
     @Test
     void testDragInGroupName() {
         sortableConfig.addDragInGroupName("group1");
-        JsonObject json = sortableConfig.toJson();
-        JsonObject group = json.getObject("group");
-        elemental.json.JsonArray put = group.getArray("put");
-        assertThat(put.length()).isEqualTo(1);
-        assertThat(put.getString(0)).isEqualTo("group1");
+        ObjectNode json = sortableConfig.toJson();
+        ObjectNode group = json.withObject("group");
+        ArrayNode put = group.withArray("put");
+        assertThat(put.size()).isEqualTo(1);
+        assertThat(put.get(0).asString()).isEqualTo("group1");
     }
 }

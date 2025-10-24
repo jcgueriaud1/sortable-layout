@@ -1,5 +1,6 @@
 package org.vaadin.jchristophe;
 
+import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
@@ -13,7 +14,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 
 public class MainLayout extends AppLayout {
 
-    private H1 viewTitle;
+    private final H1 viewTitle;
 
     public MainLayout() {
         final DrawerToggle drawerToggle = new DrawerToggle();
@@ -36,8 +37,8 @@ public class MainLayout extends AppLayout {
     }
 
     @Override
-    protected void afterNavigation() {
-        super.afterNavigation();
+    public void showRouterLayoutContent(HasElement content) {
+        super.showRouterLayoutContent(content);
         viewTitle.setText(getCurrentPageTitle());
     }
 

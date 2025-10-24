@@ -9,7 +9,7 @@
 
 .trello__column {
     height: 100%;
-    background-color: var(--lumo-primary-color-10pct);
+    background-color: var(--vaadin-primary-color-10pct);
     border-radius: var(--lumo-space-xs);
     box-shadow: var(--lumo-box-shadow-s);
     margin:var(--lumo-space-m);

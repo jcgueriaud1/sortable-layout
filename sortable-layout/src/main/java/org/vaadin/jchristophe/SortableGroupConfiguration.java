@@ -1,12 +1,18 @@
 package org.vaadin.jchristophe;
 
 import com.vaadin.flow.component.JsonSerializable;
+import com.vaadin.flow.internal.JacksonUtils;
+
 import elemental.json.Json;
 import elemental.json.JsonArray;
 import elemental.json.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * @author jcgueriaud
@@ -100,19 +106,18 @@ public class SortableGroupConfiguration implements JsonSerializable {
         this.clone = clone;
     }
     @Override
-    public JsonObject toJson() {
-        JsonObject obj = Json.createObject();
+    public ObjectNode toJson() {
+        ObjectNode obj = JacksonUtils.createObjectNode();
         if (getName() != null) {
             obj.put("name", getName());
         }
         if (groupNameDragInAllowed.isEmpty()) {
             obj.put("put", dragInAllowed);
         } else {
-            JsonArray array = Json.createArray();
-            for (int i = 0; i < groupNameDragInAllowed.size(); i++) {
-                array.set(i, groupNameDragInAllowed.get(i));
+            ArrayNode putArray = obj.withArray("put");
+            for (String put : groupNameDragInAllowed) {
+                putArray.add(put);
             }
-            obj.put("put", array);
         }
 
         if (isClone()) {
@@ -121,18 +126,18 @@ public class SortableGroupConfiguration implements JsonSerializable {
             if (groupNameDragOutAllowed.isEmpty()) {
                 obj.put("pull", dragOutAllowed);
             } else {
-                JsonArray array = Json.createArray();
-                for (int i = 0; i < groupNameDragOutAllowed.size(); i++) {
-                    array.set(i, groupNameDragOutAllowed.get(i));
+                ArrayNode pullArray = obj.withArray("pull");
+                for (String pull : groupNameDragOutAllowed) {
+                    pullArray.add(pull);
                 }
-                obj.put("pull", array);
             }
         }
         return obj;
     }
 
     @Override
-    public JsonSerializable readJson(JsonObject value) {
+    public JsonSerializable readJson(JsonNode jsonNode) {
         return null;
     }
+
 }

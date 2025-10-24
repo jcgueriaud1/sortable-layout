@@ -11,16 +11,14 @@ import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.function.SerializableRunnable;
 import com.vaadin.flow.function.SerializableSupplier;
 import com.vaadin.flow.shared.Registration;
-import elemental.json.JsonArray;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
+
+import tools.jackson.databind.node.ArrayNode;
 
 import static java.lang.Integer.min;
 
@@ -164,12 +162,12 @@ public class SortableLayout extends Div {
     }
 
     @ClientCallable
-    protected void onReorderListener(JsonArray oldIndexes, JsonArray newIndexes) {
+    protected void onReorderListener(ArrayNode oldIndexes, ArrayNode newIndexes) {
         List<Component> components = new ArrayList<>();
         int index = -1;
-        for (int i = 0; i < oldIndexes.length(); i++) {
-            int oldIndex = (int) oldIndexes.get(i).asNumber();
-            int newIndex = (int) newIndexes.get(i).asNumber();
+        for (int i = 0; i < oldIndexes.size(); i++) {
+            int oldIndex = oldIndexes.get(i).asInt();
+            int newIndex = newIndexes.get(i).asInt();
             logger.finest(MessageFormat.format("Reorder listener called drag index={0} drop index= {1}", oldIndex, newIndex));
             Component component = getComponents().get(oldIndex);
             components.add(component);
@@ -177,8 +175,8 @@ public class SortableLayout extends Div {
         for (Component component : components) {
             removeLayoutComponent(component);
         }
-        for (int i = 0; i < newIndexes.length(); i++) {
-            int newIndex = (int) newIndexes.get(i).asNumber();
+        for (int i = 0; i < newIndexes.size(); i++) {
+            int newIndex = newIndexes.get(i).asInt();
             Component component = components.get(i);
             addLayoutComponentAtIndex(newIndex, component);
             if (i == 0) {
@@ -224,11 +222,11 @@ public class SortableLayout extends Div {
     }
 
     @ClientCallable
-    protected void onAddListener(JsonArray newIndexes, boolean clone) {
+    protected void onAddListener(ArrayNode newIndexes, boolean clone) {
         List<Component> addedComponents = supplyComponentFunction.get();
         int smallestNewIndex = Integer.MAX_VALUE;
-        for (int i = 0; i < newIndexes.length(); i++) {
-            int newIndex = (int) newIndexes.get(i).asNumber();
+        for (int i = 0; i < newIndexes.size(); i++) {
+            int newIndex = newIndexes.get(i).asInt();
             if (newIndex < 0) {
                 // there is an issue in sortable layout when the index can be negative
                 logger.finest(MessageFormat.format("Add listener called drop index={0}", newIndex));
@@ -245,10 +243,10 @@ public class SortableLayout extends Div {
     }
 
     @ClientCallable
-    protected void onRemoveListener(JsonArray oldIndexes, boolean clone) {
+    protected void onRemoveListener(ArrayNode oldIndexes, boolean clone) {
         List<Component> removedComponents = new ArrayList<>();
-        for (int i = 0; i < oldIndexes.length(); i++) {
-            int oldIndex = (int) oldIndexes.get(i).asNumber();
+        for (int i = 0; i < oldIndexes.size(); i++) {
+            int oldIndex = oldIndexes.get(i).asInt();
             logger.finest(MessageFormat.format("remove listener called drag index={0}", oldIndex));
             Component removedComponent = getComponents().get(oldIndex);
             removedComponents.add(removedComponent);
