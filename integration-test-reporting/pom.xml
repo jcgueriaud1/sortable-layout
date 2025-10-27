@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.jchristophe</groupId>
     <artifactId>integration-test-reporting</artifactId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
 
     <name>Aggregate Report</name>
 
