@@ -1,7 +1,5 @@
 package org.vaadin.jchristophe;
 
-import elemental.json.JsonObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.node.ArrayNode;

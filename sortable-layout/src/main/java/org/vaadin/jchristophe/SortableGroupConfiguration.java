@@ -3,10 +3,6 @@ package org.vaadin.jchristophe;
 import com.vaadin.flow.component.JsonSerializable;
 import com.vaadin.flow.internal.JacksonUtils;
 
-import elemental.json.Json;
-import elemental.json.JsonArray;
-import elemental.json.JsonObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
