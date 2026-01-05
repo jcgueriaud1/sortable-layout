@@ -36,3 +36,4 @@ package.json
 webpack.config.js
 webpack.generated.js
 /sortable-layout-demo/frontend/generated/
+/sortable-layout-demo/src/main/frontend/generated/

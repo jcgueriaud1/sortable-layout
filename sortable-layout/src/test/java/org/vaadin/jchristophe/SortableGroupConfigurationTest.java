@@ -1,10 +1,9 @@
 package org.vaadin.jchristophe;
 
-import elemental.json.Json;
-import elemental.json.JsonArray;
-import elemental.json.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,20 +46,20 @@ class SortableGroupConfigurationTest {
         sortableGroupConfiguration.setClone(false);
         sortableGroupConfiguration.setDragInAllowed(true);
 
-        JsonObject json = sortableGroupConfiguration.toJson();
+        ObjectNode json = sortableGroupConfiguration.toJson();
 
-        assertThat(json.getString("name")).isEqualTo("test-group");
-        assertThat(json.getBoolean("pull")).isTrue();
-        assertThat(json.getBoolean("put")).isTrue();
+        assertThat(json.get("name").asString()).isEqualTo("test-group");
+        assertThat(json.get("pull").asBoolean()).isTrue();
+        assertThat(json.get("put").asBoolean()).isTrue();
     }
 
     @Test
     void testToJsonWithClone() {
         sortableGroupConfiguration.setClone(true);
 
-        JsonObject json = sortableGroupConfiguration.toJson();
+        ObjectNode json = sortableGroupConfiguration.toJson();
 
-        assertThat(json.getString("pull")).isEqualTo("clone");
+        assertThat(json.get("pull").asString()).isEqualTo("clone");
     }
 
     @Test
@@ -68,10 +67,10 @@ class SortableGroupConfigurationTest {
         sortableGroupConfiguration.addDragInGroupName("group1");
         sortableGroupConfiguration.addDragInGroupName("group2");
 
-        JsonObject json = sortableGroupConfiguration.toJson();
+        ObjectNode json = sortableGroupConfiguration.toJson();
 
-        JsonArray putArray = json.getArray("put");
-        assertThat(putArray.length()).isEqualTo(2);
+        ArrayNode putArray = json.withArray("put");
+        assertThat(putArray.size()).isEqualTo(2);
         assertThat(putArray.get(0).asString()).isEqualTo("group1");
         assertThat(putArray.get(1).asString()).isEqualTo("group2");
     }
@@ -81,10 +80,10 @@ class SortableGroupConfigurationTest {
         sortableGroupConfiguration.addDragOutGroupName("group1");
         sortableGroupConfiguration.addDragOutGroupName("group2");
 
-        JsonObject json = sortableGroupConfiguration.toJson();
+        ObjectNode json = sortableGroupConfiguration.toJson();
 
-        JsonArray pullArray = json.getArray("pull");
-        assertThat(pullArray.length()).isEqualTo(2);
+        ArrayNode pullArray = json.withArray("pull");
+        assertThat(pullArray.size()).isEqualTo(2);
         assertThat(pullArray.get(0).asString()).isEqualTo("group1");
         assertThat(pullArray.get(1).asString()).isEqualTo("group2");
     }

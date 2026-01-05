@@ -1,12 +1,14 @@
 package org.vaadin.jchristophe;
 
 import com.vaadin.flow.component.JsonSerializable;
-import elemental.json.Json;
-import elemental.json.JsonObject;
+import com.vaadin.flow.internal.JacksonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 public class SortableConfig implements JsonSerializable {
 
@@ -235,9 +237,8 @@ public class SortableConfig implements JsonSerializable {
     }
 
     @Override
-    public JsonObject toJson() {
-
-        JsonObject obj = Json.createObject();
+    public ObjectNode toJson() {
+        ObjectNode obj = JacksonUtils.createObjectNode();
         obj.put("animation", getAnimation());
         obj.put("sort", isSort());
         obj.put("delay", getDelay());
@@ -262,14 +263,12 @@ public class SortableConfig implements JsonSerializable {
                     .collect(Collectors.joining(" "))
             );
         }
-        obj.put("group", group.toJson());
+        obj.putIfAbsent("group", group.toJson());
         return obj;
     }
 
-    @Deprecated
     @Override
-    public JsonSerializable readJson(JsonObject value) {
-
+    public JsonSerializable readJson(JsonNode jsonNode) {
         return null;
     }
 
