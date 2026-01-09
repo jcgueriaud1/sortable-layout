@@ -36,6 +36,7 @@ import reactPlugin from '@vitejs/plugin-react';
 
 
 
+
 const frontendFolder = path.resolve(__dirname, settings.frontendFolder);
 const themeFolder = path.resolve(frontendFolder, settings.themeFolder);
 const frontendBundleFolder = path.resolve(__dirname, settings.frontendBundleOutput);
@@ -83,7 +84,7 @@ const hasExportedWebComponents = existsSync(path.resolve(frontendFolder, 'web-co
 const commercialBannerComponent = path.resolve(frontendFolder, settings.generatedFolder, 'commercial-banner.js');
 const hasCommercialBanner = existsSync(commercialBannerComponent);
 
-const target = ['safari15', 'es2022'];
+const target = ['es2023'];
 
 // Block debug and trace logs.
 console.trace = () => {};
@@ -179,6 +180,10 @@ function statsExtracterPlugin(): PluginOption {
       const generatedImportsSet = new Set<string>();
       parseImports(
         path.resolve(themeOptions.frontendGeneratedFolder, 'flow', 'generated-flow-imports.js'),
+        generatedImportsSet
+      );
+      parseImports(
+        path.resolve(themeOptions.frontendGeneratedFolder, 'app-shell-imports.js'),
         generatedImportsSet
       );
       const generatedImports = Array.from(generatedImportsSet).sort();
@@ -408,9 +413,12 @@ function preserveUsageStats() {
     transform(src: string, id: string) {
       if (id.includes('vaadin-usage-statistics')) {
         if (src.includes('vaadin-dev-mode:start')) {
-          const newSrc = src.replace(DEV_MODE_START_REGEXP, '/*! vaadin-dev-mode:start');
+          const expectedComment = '/*! vaadin-dev-mode:start';
+          const newSrc = src.replace(DEV_MODE_START_REGEXP, expectedComment);
           if (newSrc === src) {
-            console.error('Comment replacement failed to change anything');
+            if (!src.includes(expectedComment)) {
+              console.error('vaadin-dev-mode:start tag not found');
+            }
           } else if (!newSrc.match(DEV_MODE_CODE_REGEXP)) {
             console.error('New comment fails to match original regexp');
           } else {
@@ -456,6 +464,9 @@ export const vaadinConfig: UserConfigFn = (env) => {
       fs: {
         allow: allowedFrontendFolders
       }
+    },
+    esbuild: {
+        legalComments: 'inline',
     },
     build: {
       minify: productionMode,
@@ -561,6 +572,7 @@ export const vaadinConfig: UserConfigFn = (env) => {
           ].filter(Boolean)
         }
       }),
+      
       productionMode && vaadinI18n({
         cwd: __dirname,
         meta: {
